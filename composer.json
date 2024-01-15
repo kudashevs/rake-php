@@ -1,6 +1,6 @@
 {
     "name": "kudashevs/rake-php",
-    "description": "A PHP implementation of the Rapid Automatic Keyword Exraction (RAKE) algorithm.",
+    "description": "A PHP implementation of the Rapid Automatic Keyword Extraction (RAKE) algorithm.",
     "type": "library",
     "keywords": ["php", "keywords", "extract keywords", "rake", "RAKE", "Rapid Automatic Keyword Extraction"],
     "license": "MIT",
