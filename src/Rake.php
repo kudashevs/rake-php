@@ -169,29 +169,22 @@ class Rake
     /**
      * Load stop words from an input file
      */
-    private function load_stopwords()
+    private function load_stopwords(): array
+    {
+        $lines = $this->load_stopwords_from_file();
+
+        return array_filter($lines, function ($line) {
+            return $line[0] !== '#';
+        });
+    }
+
+    private function load_stopwords_from_file(): array
     {
         if (!file_exists($this->stopwords_path)) {
             throw new WrongFileException('Error: could not read file: ' . $this->stopwords_path);
         }
 
-        $stopwords = [];
-
-        if ($h = @fopen($this->stopwords_path, 'r')) {
-            while (($line = fgets($h)) !== false) {
-                $line = trim($line);
-
-                if ($line[0] != '#') {
-                    array_push($stopwords, $line);
-                }
-            }
-
-            return $stopwords;
-        } else {
-            echo 'Error: could not read file "' . $this->stopwords_path . '".';
-
-            return false;
-        }
+        return @file($this->stopwords_path, FILE_IGNORE_NEW_LINES) ?: [];
     }
 }
 
