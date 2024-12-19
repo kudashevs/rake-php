@@ -1,0 +1,35 @@
+{
+    "name": "kudashevs/rake-php",
+    "description": "Yet another PHP implementation of the Rapid Automatic Keyword Extraction algorithm (RAKE).",
+    "type": "library",
+    "keywords": ["php", "rake", "Rapid Automatic Keyword Extraction algorith"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sergey Kudashev",
+            "email": "kudashevs@gmail.com",
+            "homepage": "https://kudashevs.com",
+            "role": "developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5|^10.0|^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kudashevs\\RakePhp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kudashevs\\RakePhp\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --no-coverage",
+        "test-coverage": "vendor/bin/phpunit --coverage-html build/coverage"
+    }
+}

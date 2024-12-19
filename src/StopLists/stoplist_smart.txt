@@ -1,8 +1,5 @@
 # ###########################################################
-#
 # Stopwords list built by Gerard Salton and Chris Buckley.
-# Source: http://www.lextek.com/manuals/onix/stopwords2.html
-#
 # ###########################################################
 a
 a's
