@@ -6,15 +6,9 @@ namespace Kudashevs\RakePhp;
 
 class Rake
 {
-    /**
-     * @var string $stopwords_path
-     */
-    public $stopwords_path;
+    protected string $stopwords_path;
 
-    /**
-     * @var string $stopwords_pattern
-     */
-    private $stopwords_pattern;
+    private string $stopwords_pattern;
 
     /**
      * Build stop words pattern from file given by parameter
