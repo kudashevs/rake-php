@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kudashevs\RakePhp;
 
+use Kudashevs\RakePhp\Exceptions\WrongFileException;
+
 class Rake
 {
     protected string $stopwords_path;
@@ -169,7 +171,11 @@ class Rake
      */
     private function load_stopwords()
     {
-        $stopwords = array();
+        if (!file_exists($this->stopwords_path)) {
+            throw new WrongFileException('Error: could not read file: ' . $this->stopwords_path);
+        }
+
+        $stopwords = [];
 
         if ($h = @fopen($this->stopwords_path, 'r')) {
             while (($line = fgets($h)) !== false) {
