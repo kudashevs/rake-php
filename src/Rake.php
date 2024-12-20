@@ -28,7 +28,7 @@ class Rake
     public function extract($text)
     {
         $sentences = $this->split_sentences($text);
-        $phrases = $this->get_phrases($sentences);
+        $phrases = $this->generate_candidate_keywords($sentences);
         $scores = $this->get_scores($phrases);
         $keywords = $this->get_keywords($phrases, $scores);
         arsort($keywords);
@@ -62,7 +62,7 @@ class Rake
      *
      * @param array $sentences Array of sentences
      */
-    private function get_phrases($sentences)
+    private function generate_candidate_keywords($sentences)
     {
         $phrases_arr = [];
 
