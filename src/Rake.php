@@ -13,7 +13,7 @@ class Rake
     /**
      * @param string $stoplist Path to the file with stop words
      */
-    function __construct(string $stoplist = __DIR__ . '/StopLists/stoplist_smart.txt')
+    function __construct(string $stoplist = __DIR__ . '/StopLists/SmartStoplist.txt')
     {
         $this->regexStopWords = $this->build_stopwords_regex($stoplist);
     }
