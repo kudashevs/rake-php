@@ -8,14 +8,14 @@ use Kudashevs\RakePhp\Exceptions\WrongFileException;
 
 class Rake
 {
-    private string $regexStopWords;
+    private string $stopWordsRegex;
 
     /**
      * @param string $stoplist Path to the file with stop words
      */
     function __construct(string $stoplist = __DIR__ . '/StopLists/SmartStoplist.txt')
     {
-        $this->regexStopWords = $this->build_stopwords_regex($stoplist);
+        $this->stopWordsRegex = $this->buildStopWordsRegex($stoplist);
     }
 
     /**
@@ -63,7 +63,7 @@ class Rake
     {
         $phrases_arr = [];
         foreach ($sentences as $s) {
-            $phrases_temp = preg_replace($this->regexStopWords, '|', $s);
+            $phrases_temp = preg_replace($this->stopWordsRegex, '|', $s);
             $phrases = explode('|', $phrases_temp);
 
             foreach ($phrases as $p) {
@@ -139,34 +139,36 @@ class Rake
     }
 
     /**
-     * Retrieves stop words and genarates a regex containing each stop word
+     * Retrieves stop words and generates a stop words regex.
+     *
+     * @throws WrongFileException
      */
-    private function build_stopwords_regex(string $stoplist): string
+    private function buildStopWordsRegex(string $stoplist): string
     {
-        $stopwords = $this->load_stopwords($stoplist);
+        $rawStopWords = $this->loadStopWords($stoplist);
 
-        $prepared_stopwords = array_map(function ($stopword) {
-            return '\b' . $stopword . '\b';
-        }, $stopwords);
+        $preparedStopWords = array_map(function ($word) {
+            return '\b' . $word . '\b';
+        }, $rawStopWords);
 
-        return '/' . implode('|', $prepared_stopwords) . '/i';
+        return '/' . implode('|', $preparedStopWords) . '/i';
     }
 
     /**
-     * Load stop words from an input file
+     * Load stop words from a provided source.
+     *
+     * @throws WrongFileException
      */
-    private function load_stopwords(string $stoplist): array
+    private function loadStopWords(string $stoplist): array
     {
         if (!file_exists($stoplist)) {
             throw new WrongFileException('Error: cannot read the file: ' . $stoplist);
         }
 
-        $raw_stopwords = @file($stoplist, FILE_IGNORE_NEW_LINES) ?: [];
+        $rawStopWords = @file($stoplist, FILE_IGNORE_NEW_LINES) ?: [];
 
-        return array_filter($raw_stopwords, function ($line) {
+        return array_filter($rawStopWords, function ($line) {
             return $line[0] !== '#';
         });
     }
 }
-
-
