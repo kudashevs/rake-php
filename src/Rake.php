@@ -49,8 +49,7 @@ class Rake
      */
     public static function split_phrase($phrase)
     {
-        // @note check python implementation for '0123456789'
-        $words_temp = str_word_count($phrase, 1);
+        $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/u', $phrase, -1);
 
         return array_filter($words_temp, function ($word) {
             return $word !== '' && !(is_numeric($word));
