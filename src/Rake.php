@@ -19,11 +19,11 @@ class Rake
     }
 
     /**
-     * Extract key phrases from input text
+     * Applies the RAKE (Rapid Keyword Extraction Algorithm) to a provided text.
      *
      * @param string $text Input text
      */
-    public function extract($text): array
+    public function extract(string $text): array
     {
         $phrases = $this->splitIntoPhrases($text);
         $keywordCandidates = $this->extractCandidateKeywords($phrases);
