@@ -37,9 +37,10 @@ class Rake
     }
 
     /**
-     * @param string $text Text to be splitted into sentences
+     * @param string $text Text to be split into phrases
+     * @return array Array of phrases
      */
-    protected function splitIntoPhrases($text)
+    protected function splitIntoPhrases(string $text): array
     {
         return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]|\s\-\s/u', $text);
     }
