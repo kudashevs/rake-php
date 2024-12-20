@@ -8,8 +8,6 @@ use Kudashevs\RakePhp\Exceptions\WrongFileException;
 
 class Rake
 {
-    protected string $stopwords_path;
-
     private string $stopwords_pattern;
 
     /**
@@ -17,9 +15,8 @@ class Rake
      *
      * @param string $stopwords_path Path to the file with stop words
      */
-    function __construct($stopwords_path = __DIR__ . '/StopLists/stoplist_smart.txt')
+    function __construct(string $stopwords_path = __DIR__ . '/StopLists/stoplist_smart.txt')
     {
-        $this->stopwords_path = $stopwords_path;
         $this->stopwords_pattern = $this->build_stopwords_regex($stopwords_path);
     }
 
