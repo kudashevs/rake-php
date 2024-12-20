@@ -25,7 +25,7 @@ class Rake
      */
     public function extract($text): array
     {
-        $phrases = $this->splitSentences($text);
+        $phrases = $this->splitIntoPhrases($text);
         $candidate_keywords = $this->generate_candidate_keywords($phrases);
         $keyword_scores = $this->calculate_word_scores($candidate_keywords);
 
@@ -39,7 +39,7 @@ class Rake
     /**
      * @param string $text Text to be splitted into sentences
      */
-    protected function splitSentences($text)
+    protected function splitIntoPhrases($text)
     {
         return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]|\s\-\s/u', $text);
     }
