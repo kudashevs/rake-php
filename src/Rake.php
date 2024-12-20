@@ -52,16 +52,12 @@ class Rake
      */
     public static function split_phrase($phrase)
     {
-        $words_temp = str_word_count($phrase, 1, '0123456789');
-        $words = array();
+        // @note check python implementation for '0123456789'
+        $words_temp = str_word_count($phrase, 1);
 
-        foreach ($words_temp as $w) {
-            if ($w != '' and !(is_numeric($w))) {
-                array_push($words, $w);
-            }
-        }
-
-        return $words;
+        return array_filter($words_temp, function ($word) {
+            return $word !== '' && !(is_numeric($word));
+        });
     }
 
     /**
