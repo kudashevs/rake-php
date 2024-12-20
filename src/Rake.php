@@ -26,7 +26,7 @@ class Rake
     public function extract($text): array
     {
         $phrases = $this->splitIntoPhrases($text);
-        $candidate_keywords = $this->generate_candidate_keywords($phrases);
+        $candidate_keywords = $this->extractCandidateKeywords($phrases);
         $keyword_scores = $this->calculate_word_scores($candidate_keywords);
 
         $extracted_keywords = $this->generate_candidate_keyword_scores($candidate_keywords, $keyword_scores);
@@ -57,27 +57,29 @@ class Rake
     }
 
     /**
-     * Split sentences into phrases by loaded stop words
+     * Split phrases into of contiguous words. Words within a sequence are assigned
+     * the same position in the text and together are considered a candidate keyword)
+     * For more information @see 1.2.1 Candidate keywords.
      *
-     * @param array $sentences Array of sentences
+     * @param array $phrases Array of phrases
+     * @return array Array of candidates
      */
-    private function generate_candidate_keywords($sentences)
+    private function extractCandidateKeywords(array $phrases): array
     {
-        $phrases_arr = [];
-        foreach ($sentences as $s) {
-            $phrases_temp = preg_replace($this->stopWordsRegex, '|', $s);
-            $phrases = explode('|', $phrases_temp);
+        $candidates = [];
+        foreach ($phrases as $phrase) {
+            $sequences = explode('|', preg_replace($this->stopWordsRegex, '|', $phrase));
 
-            foreach ($phrases as $p) {
-                $p = strtolower(trim($p));
+            foreach ($sequences as $sequence) {
+                $sequence = strtolower(trim($sequence));
 
-                if ($p !== '') {
-                    $phrases_arr[] = $p;
+                if ($sequence !== '') {
+                    $candidates[] = $sequence;
                 }
             }
         }
 
-        return $phrases_arr;
+        return $candidates;
     }
 
     /**
