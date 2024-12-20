@@ -41,7 +41,7 @@ class Rake
      */
     protected function split_sentences($text)
     {
-        return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]|\s+\-\s+/u', $text);
+        return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]|\s\-\s/u', $text);
     }
 
     /**
