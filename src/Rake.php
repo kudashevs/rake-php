@@ -27,7 +27,7 @@ class Rake
     {
         $phrases = $this->splitIntoPhrases($text);
         $keywordCandidates = $this->extractCandidateKeywords($phrases);
-        $keywordScores = $this->calculate_word_scores($keywordCandidates);
+        $keywordScores = $this->calculateWordScores($keywordCandidates);
 
         $extracted_keywords = $this->generate_candidate_keyword_scores($keywordCandidates, $keywordScores);
 
@@ -87,7 +87,7 @@ class Rake
      *
      * @param array $phrases Array containing individual phrases
      */
-    private function calculate_word_scores($phrases)
+    private function calculateWordScores($phrases): array
     {
         $word_frequency = [];
         $word_degree = [];
