@@ -46,19 +46,6 @@ class Rake
     }
 
     /**
-     * @param string $text Text to be split into words
-     * @return array Array of words
-     */
-    protected function splitIntoWords(string $text): array
-    {
-        $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/u', $text, -1);
-
-        return array_filter($words_temp, function ($word) {
-            return $word !== '' && !(is_numeric($word));
-        });
-    }
-
-    /**
      * Split phrases into of contiguous words. Words within a sequence are assigned
      * the same position in the text and together are considered a candidate keyword)
      * For more information @see 1.2.1 Candidate keywords.
@@ -121,6 +108,19 @@ class Rake
         }
 
         return $scores;
+    }
+
+    /**
+     * @param string $text Text to be split into words
+     * @return array Array of words
+     */
+    protected function splitIntoWords(string $text): array
+    {
+        $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/u', $text, -1);
+
+        return array_filter($words_temp, function ($word) {
+            return $word !== '' && !(is_numeric($word));
+        });
     }
 
     /**
