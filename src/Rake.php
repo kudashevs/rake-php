@@ -8,14 +8,14 @@ use Kudashevs\RakePhp\Exceptions\WrongFileException;
 
 class Rake
 {
-    private string $stoplistRegex;
+    private string $regexStopWords;
 
     /**
-     * @param string $stopwords_path Path to the file with stop words
+     * @param string $stoplist Path to the file with stop words
      */
-    function __construct(string $stopwords_path = __DIR__ . '/StopLists/stoplist_smart.txt')
+    function __construct(string $stoplist = __DIR__ . '/StopLists/stoplist_smart.txt')
     {
-        $this->stoplistRegex = $this->build_stopwords_regex($stopwords_path);
+        $this->regexStopWords = $this->build_stopwords_regex($stoplist);
     }
 
     /**
@@ -63,7 +63,7 @@ class Rake
     {
         $phrases_arr = [];
         foreach ($sentences as $s) {
-            $phrases_temp = preg_replace($this->stoplistRegex, '|', $s);
+            $phrases_temp = preg_replace($this->regexStopWords, '|', $s);
             $phrases = explode('|', $phrases_temp);
 
             foreach ($phrases as $p) {
@@ -141,9 +141,9 @@ class Rake
     /**
      * Retrieves stop words and genarates a regex containing each stop word
      */
-    private function build_stopwords_regex(string $stopwords_path): string
+    private function build_stopwords_regex(string $stoplist): string
     {
-        $stopwords = $this->load_stopwords($stopwords_path);
+        $stopwords = $this->load_stopwords($stoplist);
 
         $prepared_stopwords = array_map(function ($stopword) {
             return '\b' . $stopword . '\b';
@@ -155,13 +155,13 @@ class Rake
     /**
      * Load stop words from an input file
      */
-    private function load_stopwords(string $stopwords_path): array
+    private function load_stopwords(string $stoplist): array
     {
-        if (!file_exists($stopwords_path)) {
-            throw new WrongFileException('Error: could not read file: ' . $stopwords_path);
+        if (!file_exists($stoplist)) {
+            throw new WrongFileException('Error: cannot read the file: ' . $stoplist);
         }
 
-        $raw_stopwords = @file($stopwords_path, FILE_IGNORE_NEW_LINES) ?: [];
+        $raw_stopwords = @file($stoplist, FILE_IGNORE_NEW_LINES) ?: [];
 
         return array_filter($raw_stopwords, function ($line) {
             return $line[0] !== '#';
