@@ -1,59 +1,78 @@
-# RAKE PHP
+# RAKE PHP ![test workflow](https://github.com/kudashevs/rake-php/actions/workflows/run-tests.yml/badge.svg)
 
-PHP implementation of Rapid Automatic Keyword Exraction algorithm (RAKE) for extracting multi-word phrases from text.
+A PHP implementation of Rapid Automatic Keyword Exraction Algorithm (RAKE) for extracting relevant keywords from documents.
 
-As described in:
 
-ROSE, Stuart, et al. Automatic keyword extraction from individual documents. Text Mining, 2010, 1-20.
+## Installation
 
-With help of Python implementation - [RAKE](https://github.com/aneesha/RAKE)
+You can install the package via composer:
+```bash
+composer require kudashevs/rake-php
+```
 
-## Version
-
-0.1
 
 ## Example
 
-Example use of Rake class.
+Here is a common usage example:
 
-### Code
-```
-<?php
+```php
+use Kudashevs\RakePhp\Rake;
 
-include('rake.php');
+$text = "Compatibility of systems of linear constraints over the set of natural numbers.";
+$text .= "Criteria of compatibility of a system of linear Diophantine equations, strict inequations, and nonstrict inequations are considered.";
+$text .= "Upper bounds for components of a minimal set of solutions and algorithms of construction of minimal generating sets of solutions for all types of systems are given.";
+$text .= "These criteria and the corresponding algorithms for constructing a minimal supporting set of solutions can be used in solving all the considered types of systems and systems of mixed types";
 
-$rake = new Rake('stoplist_smart.txt');
-$text = "Criteria of compatibility of a system of linear Diophantine equations, strict inequations, and nonstrict inequations are considered. Upper bounds for components of a minimal set of solutions and algorithms of construction of minimal generating sets of solutions for all types of systems are given.";
-$phrases = $rake->extract($text);
+$rake = new Rake();
+$keywords = $rake->extract($text);
 
-print_r($phrases);
-
-?>
-```
-### Output
-```
+print_r($keywords);
+// the output result
 Array
 (
-    [linear diophantine equations] => 9
-    [minimal generating sets] => 8.5
-    [minimal set] => 4.5
+    [minimal generating sets] => 8.6666666666667
+    [linear diophantine equations] => 8.5
+    [minimal supporting set] => 7.6666666666667
+    [minimal set] => 4.6666666666667
+    [linear constraints] => 4.5
+    [natural numbers] => 4
+    [strict inequations] => 4
     [nonstrict inequations] => 4
     [upper bounds] => 4
-    [strict inequations] => 4
-    [construction] => 1
+    [mixed types] => 3.6666666666667
+    [considered types] => 3.1666666666667
+    [set] => 2
+    [types] => 1.6666666666667
+    [considered] => 1.5
     [compatibility] => 1
-    [types] => 1
     [systems] => 1
-    [algorithms] => 1
-    [solutions] => 1
-    [considered] => 1
     [criteria] => 1
-    [components] => 1
     [system] => 1
+    [components] => 1
+    [solutions] => 1
+    [algorithms] => 1
+    [construction] => 1
+    [constructing] => 1
+    [solving] => 1
 )
 ```
 
-License
--------
+More information about RAKE and its usage, you can find in [the original paper](https://www.researchgate.net/publication/227988510_Automatic_Keyword_Extraction_from_Individual_Documents).
 
-Released under MIT license (read license.txt).
+
+## Notes
+
+This package contains a version of the RAKE (Rapid Automatic Keyword Exraction Algorithm) algorithm [ported from python](https://github.com/u-prashant/RAKE/).
+So, if you are curious about it, please [take a look](port/Port.php). However, I wouldn't recommend using it.
+
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+ **Note:** Please make sure to update tests as appropriate.
+
+
+## License
+
+The MIT License (MIT). Please see the [License file](LICENSE.md) for more information.
