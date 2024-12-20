@@ -27,8 +27,8 @@ class Rake
      */
     public function extract($text)
     {
-        $phrases_plain = self::split_sentences($text);
-        $phrases = $this->get_phrases($phrases_plain);
+        $sentences = $this->split_sentences($text);
+        $phrases = $this->get_phrases($sentences);
         $scores = $this->get_scores($phrases);
         $keywords = $this->get_keywords($phrases, $scores);
         arsort($keywords);
@@ -39,7 +39,7 @@ class Rake
     /**
      * @param string $text Text to be splitted into sentences
      */
-    public static function split_sentences($text)
+    public function split_sentences($text)
     {
         return preg_split('/[.?!,;\-"\'\(\)\\‘\’\–\t]+/u', $text);
     }
