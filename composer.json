@@ -20,7 +20,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Kudashevs\\RakePhp\\": "src/"
+            "Kudashevs\\RakePhp\\": "src/",
+            "Kudashevs\\RakePort\\": "port/"
         }
     },
     "autoload-dev": {
