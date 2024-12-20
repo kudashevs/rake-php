@@ -26,10 +26,10 @@ class Rake
     public function extract($text): array
     {
         $phrases = $this->splitIntoPhrases($text);
-        $candidate_keywords = $this->extractCandidateKeywords($phrases);
-        $keyword_scores = $this->calculate_word_scores($candidate_keywords);
+        $keywordCandidates = $this->extractCandidateKeywords($phrases);
+        $keywordScores = $this->calculate_word_scores($keywordCandidates);
 
-        $extracted_keywords = $this->generate_candidate_keyword_scores($candidate_keywords, $keyword_scores);
+        $extracted_keywords = $this->generate_candidate_keyword_scores($keywordCandidates, $keywordScores);
 
         arsort($extracted_keywords);
 
