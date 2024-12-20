@@ -87,31 +87,31 @@ class Rake
      */
     private function calculate_word_scores($phrases)
     {
-        $frequencies = [];
-        $degrees = [];
+        $word_frequency = [];
+        $word_degree = [];
 
-        foreach ($phrases as $p) {
-            $words = self::split_phrase($p);
+        foreach ($phrases as $phrase) {
+            $words = self::split_phrase($phrase);
             $words_count = count($words);
             $words_degree = $words_count - 1;
 
             foreach ($words as $w) {
-                $frequencies[$w] = (isset($frequencies[$w])) ? $frequencies[$w] : 0;
-                $frequencies[$w] += 1;
-                $degrees[$w] = (isset($degrees[$w])) ? $degrees[$w] : 0;
-                $degrees[$w] += $words_degree;
+                $word_frequency[$w] = (isset($word_frequency[$w])) ? $word_frequency[$w] : 0;
+                $word_frequency[$w] += 1;
+                $word_degree[$w] = (isset($word_degree[$w])) ? $word_degree[$w] : 0;
+                $word_degree[$w] += $words_degree;
             }
         }
 
-        foreach ($frequencies as $word => $freq) {
-            $degrees[$word] += $freq;
+        foreach ($word_frequency as $word => $freq) {
+            $word_degree[$word] += $freq;
         }
 
         $scores = [];
 
-        foreach ($frequencies as $word => $freq) {
+        foreach ($word_frequency as $word => $freq) {
             $scores[$word] = (isset($scores[$word])) ? $scores[$word] : 0;
-            $scores[$word] = $degrees[$word] / (float)$freq;
+            $scores[$word] = $word_degree[$word] / (float)$freq;
         }
 
         return $scores;
