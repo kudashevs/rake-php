@@ -46,11 +46,12 @@ class Rake
     }
 
     /**
-     * @param string $phrase Phrase to be splitted into words
+     * @param string $text Text to be split into words
+     * @return array Array of words
      */
-    protected function splitIntoWords($phrase)
+    protected function splitIntoWords(string $text): array
     {
-        $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/u', $phrase, -1);
+        $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/u', $text, -1);
 
         return array_filter($words_temp, function ($word) {
             return $word !== '' && !(is_numeric($word));
