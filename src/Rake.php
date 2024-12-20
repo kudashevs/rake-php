@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kudashevs\RakePhp;
 
-use Kudashevs\RakePhp\Exceptions\WrongFileException;
+use Kudashevs\RakePhp\Exceptions\WrongStoplistSource;
 
 class Rake
 {
@@ -151,7 +151,7 @@ class Rake
     /**
      * Retrieves stop words and generates a stop words regex.
      *
-     * @throws WrongFileException
+     * @throws WrongStoplistSource
      */
     private function buildStopWordsRegex(string $stoplist): string
     {
@@ -167,12 +167,12 @@ class Rake
     /**
      * Load stop words from a provided source.
      *
-     * @throws WrongFileException
+     * @throws WrongStoplistSource
      */
     private function loadStopWords(string $stoplist): array
     {
         if (!file_exists($stoplist)) {
-            throw new WrongFileException('Error: cannot read the file: ' . $stoplist);
+            throw new WrongStoplistSource('Error: cannot read the file: ' . $stoplist);
         }
 
         $rawStopWords = @file($stoplist, FILE_IGNORE_NEW_LINES) ?: [];
