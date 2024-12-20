@@ -29,11 +29,11 @@ class Rake
         $keywordCandidates = $this->extractCandidateKeywords($phrases);
         $keywordScores = $this->calculateWordScores($keywordCandidates);
 
-        $extracted_keywords = $this->generateCandidateKeywordScores($keywordCandidates, $keywordScores);
+        $extractedKeywords = $this->generateExtractedKeywords($keywordCandidates, $keywordScores);
 
-        arsort($extracted_keywords);
+        arsort($extractedKeywords);
 
-        return $extracted_keywords;
+        return $extractedKeywords;
     }
 
     /**
@@ -124,28 +124,28 @@ class Rake
     }
 
     /**
-     * Calculate score for each phrase by words scores
+     * Generate extracted keywords by combining each candidate with its score.
      *
-     * @param array $phrases Array of phrases (optimally) returned by get_phrases() method
-     * @param array $scores Array of words and their scores returned by get_scores() method
+     * @param array $candidates Array of keyword candidates
+     * @param array $scores Array of candidates' scores
+     * @return array Array of extracted keywords
      */
-    private function generateCandidateKeywordScores($phrases, $scores)
+    private function generateExtractedKeywords(array $candidates, array $scores): array
     {
-        $candidates = [];
-
-        foreach ($phrases as $phrase) {
-            $candidates[$phrase] = $candidates[$phrase] ?? 0;
-            $words = $this->splitIntoWords($phrase);
+        $extractedKeywords = [];
+        foreach ($candidates as $candidate) {
+            $extractedKeywords[$candidate] = $extractedKeywords[$candidate] ?? 0;
+            $words = $this->splitIntoWords($candidate);
             $score = 0;
 
             foreach ($words as $word) {
                 $score += $scores[$word];
             }
 
-            $candidates[$phrase] = $score;
+            $extractedKeywords[$candidate] = $score;
         }
 
-        return $candidates;
+        return $extractedKeywords;
     }
 
     /**
