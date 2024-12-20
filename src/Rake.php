@@ -30,10 +30,10 @@ class Rake
         $sentences = $this->split_sentences($text);
         $phrases = $this->generate_candidate_keywords($sentences);
         $scores = $this->calculate_word_scores($phrases);
-        $keywords = $this->get_keywords($phrases, $scores);
-        arsort($keywords);
+        $keyword_candidates = $this->get_keywords($phrases, $scores);
+        arsort($keyword_candidates);
 
-        return $keywords;
+        return $keyword_candidates;
     }
 
     /**
