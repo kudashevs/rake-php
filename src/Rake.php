@@ -29,7 +29,7 @@ class Rake
         $keywordCandidates = $this->extractCandidateKeywords($phrases);
         $keywordScores = $this->calculateWordScores($keywordCandidates);
 
-        $extracted_keywords = $this->generate_candidate_keyword_scores($keywordCandidates, $keywordScores);
+        $extracted_keywords = $this->generateCandidateKeywordScores($keywordCandidates, $keywordScores);
 
         arsort($extracted_keywords);
 
@@ -129,7 +129,7 @@ class Rake
      * @param array $phrases Array of phrases (optimally) returned by get_phrases() method
      * @param array $scores Array of words and their scores returned by get_scores() method
      */
-    private function generate_candidate_keyword_scores($phrases, $scores)
+    private function generateCandidateKeywordScores($phrases, $scores)
     {
         $candidates = [];
 
