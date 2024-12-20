@@ -82,29 +82,29 @@ class Rake
      */
     private function calculateWordScores(array $candidates): array
     {
-        $wordFrequency = [];
-        $wordDegree = [];
+        $wordFrequencies = [];
+        $wordDegrees = [];
 
         foreach ($candidates as $candidate) {
             $words = $this->splitIntoWords($candidate);
-            $words_list_degree = count($words) - 1;
+            $wordsTotalDegree = count($words) - 1;
 
             foreach ($words as $word) {
-                $wordFrequency[$word] = $wordFrequency[$word] ?? 0;
-                $wordFrequency[$word] += 1;
-                $wordDegree[$word] = $wordDegree[$word] ?? 0;
-                $wordDegree[$word] += $words_list_degree;
+                $wordFrequencies[$word] = $wordFrequencies[$word] ?? 0;
+                $wordFrequencies[$word] += 1;
+                $wordDegrees[$word] = $wordDegrees[$word] ?? 0;
+                $wordDegrees[$word] += $wordsTotalDegree;
             }
         }
 
-        foreach ($wordFrequency as $word => $freq) {
-            $wordDegree[$word] += $freq;
+        foreach ($wordFrequencies as $word => $freq) {
+            $wordDegrees[$word] += $freq;
         }
 
         $scores = [];
-        foreach ($wordFrequency as $word => $freq) {
+        foreach ($wordFrequencies as $word => $freq) {
             $scores[$word] = $scores[$word] ?? 0;
-            $scores[$word] = $wordDegree[$word] / (float)$freq;
+            $scores[$word] = $wordDegrees[$word] / (float)$freq;
         }
 
         return $scores;
