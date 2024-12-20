@@ -65,7 +65,6 @@ class Rake
     private function generate_candidate_keywords($sentences)
     {
         $phrases_arr = [];
-
         foreach ($sentences as $s) {
             $phrases_temp = preg_replace($this->stopwords_pattern, '|', $s);
             $phrases = explode('|', $phrases_temp);
@@ -73,8 +72,8 @@ class Rake
             foreach ($phrases as $p) {
                 $p = strtolower(trim($p));
 
-                if ($p != '') {
-                    array_push($phrases_arr, $p);
+                if ($p !== '') {
+                    $phrases_arr[] = $p;
                 }
             }
         }
