@@ -47,7 +47,7 @@ class Rake
     /**
      * @param string $phrase Phrase to be splitted into words
      */
-    protected function separate_words($phrase)
+    protected function splitIntoWords($phrase)
     {
         $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/u', $phrase, -1);
 
@@ -97,7 +97,7 @@ class Rake
         $wordDegree = [];
 
         foreach ($candidates as $candidate) {
-            $words = $this->separate_words($candidate);
+            $words = $this->splitIntoWords($candidate);
             $words_list_degree = count($words) - 1;
 
             foreach ($words as $word) {
@@ -133,7 +133,7 @@ class Rake
 
         foreach ($phrases as $phrase) {
             $candidates[$phrase] = $candidates[$phrase] ?? 0;
-            $words = $this->separate_words($phrase);
+            $words = $this->splitIntoWords($phrase);
             $score = 0;
 
             foreach ($words as $word) {
