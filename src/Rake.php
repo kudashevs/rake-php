@@ -39,7 +39,7 @@ class Rake
     /**
      * @param string $text Text to be splitted into sentences
      */
-    public function split_sentences($text)
+    protected function split_sentences($text)
     {
         return preg_split('/[.?!,;\-"\'\(\)\\‘\’\–\t]+/u', $text);
     }
