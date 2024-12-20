@@ -40,7 +40,7 @@ class Rake
      * @param string $text Text to be split into phrases
      * @return array Array of phrases
      */
-    protected function splitIntoPhrases(string $text): array
+    private function splitIntoPhrases(string $text): array
     {
         return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]|\s\-\s/u', $text);
     }
@@ -114,7 +114,7 @@ class Rake
      * @param string $text Text to be split into words
      * @return array Array of words
      */
-    protected function splitIntoWords(string $text): array
+    private function splitIntoWords(string $text): array
     {
         $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/u', $text, -1);
 
