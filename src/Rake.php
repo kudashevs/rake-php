@@ -13,14 +13,14 @@ class Rake
     private string $stopwords_pattern;
 
     /**
-     * Build stop words pattern from file given by parameter
+     * Build a stop words pattern from a provided file.
      *
      * @param string $stopwords_path Path to the file with stop words
      */
     function __construct($stopwords_path = __DIR__ . '/StopLists/stoplist_smart.txt')
     {
         $this->stopwords_path = $stopwords_path;
-        $this->stopwords_pattern = $this->build_stopwords_regex();
+        $this->stopwords_pattern = $this->build_stopwords_regex($stopwords_path);
     }
 
     /**
@@ -148,39 +148,33 @@ class Rake
     }
 
     /**
-     * Get loaded stop words and return regex containing each stop word
+     * Retrieves stop words and genarates a regex containing each stop word
      */
-    private function build_stopwords_regex()
+    private function build_stopwords_regex(string $stopwords_path): string
     {
-        $stopwords_arr = $this->load_stopwords();
-        $stopwords_regex_arr = [];
+        $stopwords = $this->load_stopwords($stopwords_path);
 
-        foreach ($stopwords_arr as $word) {
-            array_push($stopwords_regex_arr, '\b' . $word . '\b');
-        }
+        $prepared_stopwords = array_map(function ($stopword) {
+            return '\b' . $stopword . '\b';
+        }, $stopwords);
 
-        return '/' . implode('|', $stopwords_regex_arr) . '/i';
+        return '/' . implode('|', $prepared_stopwords) . '/i';
     }
 
     /**
      * Load stop words from an input file
      */
-    private function load_stopwords(): array
+    private function load_stopwords(string $stopwords_path): array
     {
-        $lines = $this->load_stopwords_from_file();
-
-        return array_filter($lines, function ($line) {
-            return $line[0] !== '#';
-        });
-    }
-
-    private function load_stopwords_from_file(): array
-    {
-        if (!file_exists($this->stopwords_path)) {
-            throw new WrongFileException('Error: could not read file: ' . $this->stopwords_path);
+        if (!file_exists($stopwords_path)) {
+            throw new WrongFileException('Error: could not read file: ' . $stopwords_path);
         }
 
-        return @file($this->stopwords_path, FILE_IGNORE_NEW_LINES) ?: [];
+        $raw_stopwords = @file($stopwords_path, FILE_IGNORE_NEW_LINES) ?: [];
+
+        return array_filter($raw_stopwords, function ($line) {
+            return $line[0] !== '#';
+        });
     }
 }
 
