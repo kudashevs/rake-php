@@ -29,7 +29,7 @@ class Rake
     {
         $sentences = $this->split_sentences($text);
         $phrases = $this->generate_candidate_keywords($sentences);
-        $scores = $this->get_scores($phrases);
+        $scores = $this->calculate_word_scores($phrases);
         $keywords = $this->get_keywords($phrases, $scores);
         arsort($keywords);
 
@@ -86,7 +86,7 @@ class Rake
      *
      * @param array $phrases Array containing individual phrases
      */
-    private function get_scores($phrases)
+    private function calculate_word_scores($phrases)
     {
         $frequencies = [];
         $degrees = [];
