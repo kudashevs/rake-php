@@ -83,35 +83,39 @@ class Rake
     }
 
     /**
-     * Calculate score for each word
+     * Calculate score for each candidate. After every candidate keyword is identified
+     * and the graph of word co-occurrences is complete, a score is calculated  for each
+     * candidate keyword and defined as the sum of its member word scores.
+     * For more information @see 1.2.2 Keyword scores
      *
-     * @param array $phrases Array containing individual phrases
+     * @param array $candidates Array of candidates
+     * @return array Array of scores
      */
-    private function calculateWordScores($phrases): array
+    private function calculateWordScores(array $candidates): array
     {
-        $word_frequency = [];
-        $word_degree = [];
+        $wordFrequency = [];
+        $wordDegree = [];
 
-        foreach ($phrases as $phrase) {
-            $words = $this->separate_words($phrase);
+        foreach ($candidates as $candidate) {
+            $words = $this->separate_words($candidate);
             $words_list_degree = count($words) - 1;
 
             foreach ($words as $word) {
-                $word_frequency[$word] = $word_frequency[$word] ?? 0;
-                $word_frequency[$word] += 1;
-                $word_degree[$word] = $word_degree[$word] ?? 0;
-                $word_degree[$word] += $words_list_degree;
+                $wordFrequency[$word] = $wordFrequency[$word] ?? 0;
+                $wordFrequency[$word] += 1;
+                $wordDegree[$word] = $wordDegree[$word] ?? 0;
+                $wordDegree[$word] += $words_list_degree;
             }
         }
 
-        foreach ($word_frequency as $word => $freq) {
-            $word_degree[$word] += $freq;
+        foreach ($wordFrequency as $word => $freq) {
+            $wordDegree[$word] += $freq;
         }
 
         $scores = [];
-        foreach ($word_frequency as $word => $freq) {
+        foreach ($wordFrequency as $word => $freq) {
             $scores[$word] = $scores[$word] ?? 0;
-            $scores[$word] = $word_degree[$word] / (float)$freq;
+            $scores[$word] = $wordDegree[$word] / (float)$freq;
         }
 
         return $scores;
