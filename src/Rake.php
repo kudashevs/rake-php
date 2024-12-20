@@ -23,15 +23,17 @@ class Rake
      *
      * @param string $text Input text
      */
-    public function extract($text)
+    public function extract($text): array
     {
-        $sentences = $this->splitSentences($text);
-        $phrases = $this->generate_candidate_keywords($sentences);
-        $scores = $this->calculate_word_scores($phrases);
-        $keyword_candidates = $this->generate_candidate_keyword_scores($phrases, $scores);
-        arsort($keyword_candidates);
+        $phrases = $this->splitSentences($text);
+        $candidate_keywords = $this->generate_candidate_keywords($phrases);
+        $keyword_scores = $this->calculate_word_scores($candidate_keywords);
 
-        return $keyword_candidates;
+        $extracted_keywords = $this->generate_candidate_keyword_scores($candidate_keywords, $keyword_scores);
+
+        arsort($extracted_keywords);
+
+        return $extracted_keywords;
     }
 
     /**
