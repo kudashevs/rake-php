@@ -123,21 +123,21 @@ class Rake
      */
     private function generate_candidate_keyword_scores($phrases, $scores)
     {
-        $keywords = [];
+        $candidates = [];
 
-        foreach ($phrases as $p) {
-            $keywords[$p] = (isset($keywords[$p])) ? $keywords[$p] : 0;
-            $words = $this->separate_words($p);
+        foreach ($phrases as $phrase) {
+            $candidates[$phrase] = $candidates[$phrase] ?? 0;
+            $words = $this->separate_words($phrase);
             $score = 0;
 
-            foreach ($words as $w) {
-                $score += $scores[$w];
+            foreach ($words as $word) {
+                $score += $scores[$word];
             }
 
-            $keywords[$p] = $score;
+            $candidates[$phrase] = $score;
         }
 
-        return $keywords;
+        return $candidates;
     }
 
     /**
