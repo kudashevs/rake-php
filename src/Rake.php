@@ -67,7 +67,7 @@ class Rake
      */
     private function get_phrases($sentences)
     {
-        $phrases_arr = array();
+        $phrases_arr = [];
 
         foreach ($sentences as $s) {
             $phrases_temp = preg_replace($this->stopwords_pattern, '|', $s);
@@ -92,8 +92,8 @@ class Rake
      */
     private function get_scores($phrases)
     {
-        $frequencies = array();
-        $degrees = array();
+        $frequencies = [];
+        $degrees = [];
 
         foreach ($phrases as $p) {
             $words = self::split_phrase($p);
@@ -112,7 +112,7 @@ class Rake
             $degrees[$word] += $freq;
         }
 
-        $scores = array();
+        $scores = [];
 
         foreach ($frequencies as $word => $freq) {
             $scores[$word] = (isset($scores[$word])) ? $scores[$word] : 0;
@@ -130,7 +130,7 @@ class Rake
      */
     private function get_keywords($phrases, $scores)
     {
-        $keywords = array();
+        $keywords = [];
 
         foreach ($phrases as $p) {
             $keywords[$p] = (isset($keywords[$p])) ? $keywords[$p] : 0;
@@ -153,7 +153,7 @@ class Rake
     private function build_stopwords_regex()
     {
         $stopwords_arr = $this->load_stopwords();
-        $stopwords_regex_arr = array();
+        $stopwords_regex_arr = [];
 
         foreach ($stopwords_arr as $word) {
             array_push($stopwords_regex_arr, '\b' . $word . '\b');
