@@ -25,6 +25,16 @@ class RakeTest extends TestCase
     }
 
     /** @test */
+    public function it_cannot_split_when_no_stop_words_in_a_text(): void
+    {
+        $text = 'unsplit phrase';
+
+        $words = $this->service->extract($text);
+
+        $this->assertCount(1, $words);
+    }
+
+    /** @test */
     public function it_can_split_words(): void
     {
         $text = 'split this phrase';
