@@ -64,6 +64,19 @@ class RakeTest extends TestCase
         $this->assertCount(3, $words);
     }
 
-        $this->assertCount(2, $phrases);
+    /** @test */
+    public function it_can_split_with_new_lines(): void
+    {
+        $text = "split\nthese\n42\nwords\n";
+
+        $words = $this->service->extract($text);
+
+        $this->assertCount(2, $words);
+        $this->assertFalse($this->assertMatchesRegex('/\R/', array_key_last($words)));
+    }
+
+    private function assertMatchesRegex(string $regex, string $text): bool
+    {
+        return preg_match($regex, $text) === 1;
     }
 }

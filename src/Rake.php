@@ -25,7 +25,8 @@ class Rake
      */
     public function extract(string $text): array
     {
-        $phrases = $this->splitIntoPhrases($text);
+        $preprocessed = $this->preprocessText($text);
+        $phrases = $this->splitIntoPhrases($preprocessed);
         $keywordCandidates = $this->extractCandidateKeywords($phrases);
         $keywordScores = $this->calculateWordScores($keywordCandidates);
 
@@ -34,6 +35,18 @@ class Rake
         arsort($extractedKeywords);
 
         return $extractedKeywords;
+    }
+
+    /**
+     * The pre-processing includes the following steps:
+     * - replace new lines with spaces
+     *
+     * @param string $text
+     * @return string
+     */
+    private function preprocessText(string $text): string
+    {
+        return preg_replace('/\R/', ' ', $text);
     }
 
     /**
