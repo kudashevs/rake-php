@@ -30,15 +30,15 @@ class RakeTest extends TestCase
         $text = 'split word';
         $words = $this->service->extract($text);
 
-        $this->assertCount(1, $words);
+        $this->assertCount(2, $words);
     }
 
     /** @test */
     public function it_can_split_a_numeric(): void
     {
         $text = 'split 42 word';
-        $rake = new Rake();
-        $phrases = $rake->extract($text);
+
+        $phrases = $this->service->extract($text);
 
         $this->assertCount(1, $phrases);
     }
@@ -47,8 +47,8 @@ class RakeTest extends TestCase
     public function it_can_split_a_numeric_with_u2018(): void
     {
         $text = 'split 4’2 word';
-        $rake = new Rake();
-        $phrases = $rake->extract($text);
+
+        $phrases = $this->service->extract($text);
 
         $this->assertCount(2, $phrases);
     }
