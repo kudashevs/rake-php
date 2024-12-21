@@ -27,7 +27,8 @@ class RakeTest extends TestCase
     /** @test */
     public function it_can_split_words(): void
     {
-        $text = 'split word';
+        $text = 'split this phrase';
+
         $words = $this->service->extract($text);
 
         $this->assertCount(2, $words);
@@ -36,19 +37,22 @@ class RakeTest extends TestCase
     /** @test */
     public function it_can_split_a_numeric(): void
     {
-        $text = 'split 42 word';
+        $text = 'split these 42 words';
 
-        $phrases = $this->service->extract($text);
+        $words = $this->service->extract($text);
 
-        $this->assertCount(1, $phrases);
+        $this->assertCount(2, $words);
     }
 
     /** @test */
     public function it_can_split_a_numeric_with_u2018(): void
     {
-        $text = 'split 4’2 word';
+        $text = 'split these 4’2 words';
 
-        $phrases = $this->service->extract($text);
+        $words = $this->service->extract($text);
+
+        $this->assertCount(3, $words);
+    }
 
         $this->assertCount(2, $phrases);
     }
