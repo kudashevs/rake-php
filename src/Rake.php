@@ -140,7 +140,7 @@ class Rake
      * @param string $text
      * @return string
      */
-    private function preprocessText(string $text): string
+    protected function preprocessText(string $text): string
     {
         return preg_replace('/\R/', ' ', $text);
     }
@@ -149,7 +149,7 @@ class Rake
      * @param string $text Text to be split into phrases
      * @return array Array of phrases
      */
-    private function splitIntoPhrases(string $text): array
+    protected function splitIntoPhrases(string $text): array
     {
         return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]|\s\-\s/u', $text);
     }
@@ -162,7 +162,7 @@ class Rake
      * @param array $phrases Array of phrases
      * @return array Array of candidates
      */
-    private function extractCandidateKeywords(array $phrases): array
+    protected function extractCandidateKeywords(array $phrases): array
     {
         $candidates = [];
         foreach ($phrases as $phrase) {
@@ -189,7 +189,7 @@ class Rake
      * @param array $candidates Array of candidates
      * @return array Array of scores
      */
-    private function calculateWordScores(array $candidates): array
+    protected function calculateWordScores(array $candidates): array
     {
         $wordFrequencies = [];
         $wordDegrees = [];
@@ -223,7 +223,7 @@ class Rake
      * @param string $text Text to be split into words
      * @return array Array of words
      */
-    private function splitIntoWords(string $text): array
+    protected function splitIntoWords(string $text): array
     {
         $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/u', $text, -1);
 
