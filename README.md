@@ -61,10 +61,14 @@ Array
 More information about RAKE and its usage, you can find in [the original paper](https://www.researchgate.net/publication/227988510_Automatic_Keyword_Extraction_from_Individual_Documents).
 
 
-## Notes
+## Options
 
-This package contains a version of the RAKE (Rapid Automatic Keyword Extraction) algorithm [ported from python](https://github.com/u-prashant/RAKE/).
-So, if you are curious about it, please [take a look](port/Port.php). However, I wouldn't recommend using it.
+The `Rake` class accepts some configuration options:
+```
+'stoplist' => 'string'       # A valid txt file with a list of stop words
+'exclude' => []              # An array of words that will be excluded from the stoplist
+'include' => []              # An array of words that will be included in the stoplist
+```
 
 
 ## Contributing
