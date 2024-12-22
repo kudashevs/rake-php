@@ -290,8 +290,30 @@ class Rake
      */
     private function prepareStopWords(array $words): array
     {
-        $withoutExclusions = array_diff($words, $this->options['exclude']);
+        $withoutExclusions = array_diff($words, $this->prepareExclusions());
 
-        return array_merge($withoutExclusions, $this->options['include']);
+        return array_merge($withoutExclusions, $this->prepareInclusions());
+    }
+
+    protected function prepareExclusions(): array
+    {
+        return array_reduce($this->options['exclude'], function ($words, $word) {
+            if (is_string($word) && trim($word) !== '') {
+                $words[] = strtolower($word);
+            }
+
+            return $words;
+        }, []);
+    }
+
+    protected function prepareInclusions(): array
+    {
+        return array_reduce($this->options['include'], function ($words, $word) {
+            if (is_string($word) && trim($word) !== '') {
+                $words[] = strtolower($word);
+            }
+
+            return $words;
+        }, []);
     }
 }
