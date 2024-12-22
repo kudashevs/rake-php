@@ -51,6 +51,9 @@ class Rake
         $this->initStopWordsRegex();
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     protected function initOptions(array $options): void
     {
         $this->validateOptions($options);
@@ -58,6 +61,9 @@ class Rake
         $this->options = array_merge($this->options, $options);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     protected function validateOptions(array $options): void
     {
         if (isset($options['exclude']) && !is_array($options['exclude'])) {
@@ -79,8 +85,8 @@ class Rake
     }
 
     /**
-     * Apply the RAKE (Rapid Automatic Keyword Extraction) to a provided text
-     * and return a list of results in the keyword => score format.
+     * Apply the RAKE (Rapid Automatic Keyword Extraction) algorithm
+     * to a text and return a list of results in the keyword => score format.
      *
      * @param string $text Input text
      * @return array An array of the RAKE algorithm result
@@ -100,8 +106,8 @@ class Rake
     }
 
     /**
-     * Apply the RAKE (Rapid Automatic Keyword Extraction) to a provided text
-     * and return a list of found keywords only.
+     * Apply the RAKE (Rapid Automatic Keyword Extraction) algorithm
+     * to a provided text and return a list of found keywords only.
      *
      * @param string $text
      * @return array
@@ -114,8 +120,8 @@ class Rake
     }
 
     /**
-     * Apply the RAKE (Rapid Automatic Keyword Extraction) to a provided text
-     * and return a list of calculated scores only.
+     * Apply the RAKE (Rapid Automatic Keyword Extraction) algorithm
+     * to a provided text and return a list of calculated scores only.
      *
      * @param string $text
      * @return array
@@ -271,7 +277,7 @@ class Rake
     /**
      * Load stop words from a provided source.
      *
-     * @throws WrongStoplistSource
+     * @return array An array of stop words
      */
     private function loadStopWords(string $stoplist): array
     {
@@ -283,7 +289,9 @@ class Rake
     }
 
     /**
-     * Apply exclusions and inclusions to the list of stop words.
+     * The preparation process includes the following steps:
+     * - apply exclusions to the list of stop words
+     * - apply inclusions to the list of stop words
      *
      * @param array $words
      * @return void
