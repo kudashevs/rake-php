@@ -17,24 +17,29 @@ class Rake
     /**
      * 'stoplist' string A default file with stop words.
      * 'exclude' array An array of stop words exclusions.
+     * 'include' array An array of stop words inclusions.
      *
      * @var array{
      *     stoplist: string,
      *     exclude: array<array-key, string>,
+     *     include: array<array-key, string>,
      * }
      */
     protected array $options = [
         'stoplist' => self::DEFAULT_STOPLIST_FILEPATH,
         'exclude' => [],
+        'include' => [],
     ];
 
     /**
      * 'stoplist' string A valid file with a list of stop words (stoplist).
      * 'exclude' array An array of words that should be excluded from the stoplist.
+     * 'include' array An array of words that should be included in the stoplist.
      *
      * @param array{
      *     stoplist: string,
      *     exclude: array<array-key, string>,
+     *     include: array<array-key, string>,
      * } $options
      *
      * @throws InvalidArgumentException
@@ -57,6 +62,10 @@ class Rake
     {
         if (isset($options['exclude']) && !is_array($options['exclude'])) {
             throw new InvalidOptionType('The exclude option must be an array');
+        }
+
+        if (isset($options['include']) && !is_array($options['include'])) {
+            throw new InvalidOptionType('The include option must be an array');
         }
 
         if (isset($options['stoplist']) && !file_exists($options['stoplist'])) {
@@ -281,6 +290,8 @@ class Rake
      */
     private function prepareStopWords(array $words): array
     {
-        return array_diff($words, $this->options['exclude']);
+        $withoutExclusions = array_diff($words, $this->options['exclude']);
+
+        return array_merge($withoutExclusions, $this->options['include']);
     }
 }

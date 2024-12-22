@@ -80,6 +80,26 @@ class RakeTest extends TestCase
     }
 
     /** @test */
+    public function it_throws_an_exception_when_an_invalid_include_type(): void
+    {
+        $this->expectException(InvalidOptionType::class);
+        $this->expectExceptionMessage('array');
+
+        new Rake(['include' => 'wrong']);
+    }
+
+    /** @test */
+    public function it_can_include_words_to_a_stoplist(): void
+    {
+        $service = new Rake(['include' => ['split', 'phrase']]);
+        $text = 'split this phrase';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(0, $words);
+    }
+
+    /** @test */
     public function it_cannot_split_when_no_stop_words_in_a_text(): void
     {
         $text = 'unsplit phrase';
