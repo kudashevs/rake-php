@@ -63,7 +63,7 @@ More information about RAKE and its usage, you can find in [the original paper](
 
 ## Notes
 
-This package contains a version of the RAKE (Rapid Automatic Keyword Exraction Algorithm) algorithm [ported from python](https://github.com/u-prashant/RAKE/).
+This package contains a version of the RAKE (Rapid Automatic Keyword Extraction) algorithm [ported from python](https://github.com/u-prashant/RAKE/).
 So, if you are curious about it, please [take a look](port/Port.php). However, I wouldn't recommend using it.
 
 
