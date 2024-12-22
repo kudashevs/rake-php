@@ -76,6 +76,20 @@ class Rake
     }
 
     /**
+     * Apply the RAKE (Rapid Automatic Keyword Extraction) to a provided text
+     * and return a list of found keywords only.
+     *
+     * @param string $text
+     * @return array
+     */
+    public function extractWords(string $text): array
+    {
+        $result = $this->extract($text);
+
+        return array_keys($result);
+    }
+
+    /**
      * The pre-processing includes the following steps:
      * - replace new lines with spaces
      *
