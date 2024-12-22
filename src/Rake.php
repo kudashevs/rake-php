@@ -10,7 +10,7 @@ class Rake
 {
     protected const DEFAULT_STOPLIST_FILEPATH = __DIR__ . '/StopLists/SmartStoplist.txt';
 
-    protected string $stopWordsRegex;
+    protected readonly string $stopWordsRegex;
 
     /**
      * 'stoplist' string A default file with stop words.
