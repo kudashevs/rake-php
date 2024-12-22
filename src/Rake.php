@@ -238,11 +238,11 @@ class Rake
     {
         $rawStopWords = $this->loadStopWords($stoplist);
 
-        $preparedStopWords = array_map(function ($word) {
+        $bounderizedStopWords = array_map(function ($word) {
             return '\b' . $word . '\b';
         }, $rawStopWords);
 
-        return '/' . implode('|', $preparedStopWords) . '/i';
+        return '/' . implode('|', $bounderizedStopWords) . '/i';
     }
 
     /**
