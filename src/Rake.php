@@ -297,23 +297,22 @@ class Rake
 
     protected function prepareExclusions(): array
     {
-        return array_reduce($this->options['exclude'], function ($words, $word) {
-            if (is_string($word) && trim($word) !== '') {
-                $words[] = strtolower($word);
-            }
-
-            return $words;
-        }, []);
+        return $this->prepareWordsForStoplist($this->options['exclude']);
     }
 
     protected function prepareInclusions(): array
     {
-        return array_reduce($this->options['include'], function ($words, $word) {
+        return $this->prepareWordsForStoplist($this->options['include']);
+    }
+
+    protected function prepareWordsForStoplist(array $words): array
+    {
+        return array_reduce($words, function ($preparedWords, $word) {
             if (is_string($word) && trim($word) !== '') {
-                $words[] = strtolower($word);
+                $preparedWords[] = strtolower($word);
             }
 
-            return $words;
+            return $preparedWords;
         }, []);
     }
 }
