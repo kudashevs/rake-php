@@ -1,6 +1,6 @@
 # Rake PHP ![test workflow](https://github.com/kudashevs/rake-php/actions/workflows/run-tests.yml/badge.svg)
 
-A PHP implementation of the Rapid Automatic Keyword Exraction (RAKE) algorithm for extracting relevant keywords from
+A PHP implementation of the Rapid Automatic Keyword Extraction (RAKE) algorithm for extracting relevant keywords from
 individual documents.
 
 
