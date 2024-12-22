@@ -57,9 +57,11 @@ class Rake
     }
 
     /**
-     * Applies the RAKE (Rapid Keyword Extraction Algorithm) to a provided text.
+     * Apply the RAKE (Rapid Automatic Keyword Extraction) to a provided text
+     * and return a list of results in the keyword => score format.
      *
      * @param string $text Input text
+     * @return array An array of the RAKE algorithm result
      */
     public function extract(string $text): array
     {
