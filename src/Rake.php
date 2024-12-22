@@ -8,14 +8,52 @@ use Kudashevs\RakePhp\Exceptions\WrongStoplistSource;
 
 class Rake
 {
-    private string $stopWordsRegex;
+    protected const DEFAULT_STOPLIST_FILEPATH = __DIR__ . '/StopLists/SmartStoplist.txt';
+
+    protected string $stopWordsRegex;
 
     /**
-     * @param string $stoplist Path to the file with stop words
+     * 'stoplist' string A default file with stop words.
+     *
+     * @var array{
+     *     stoplist: string,
+     * }
      */
-    function __construct(string $stoplist = __DIR__ . '/StopLists/SmartStoplist.txt')
+    protected array $options = [
+        'stoplist' => self::DEFAULT_STOPLIST_FILEPATH,
+    ];
+
+    /**
+     * 'stoplist' string A valid file with stop words.
+     *
+     * @param array{
+     *     stoplist: string,
+     * } $options
+     */
+    public function __construct(array $options = [])
     {
-        $this->stopWordsRegex = $this->buildStopWordsRegex($stoplist);
+        $this->initOptions($options);
+
+        $this->initStopWordsRegex();
+    }
+
+    protected function initOptions(array $options): void
+    {
+        $this->validateOptions($options);
+
+        $this->options = array_merge($this->options, $options);
+    }
+
+    protected function validateOptions(array $options): void
+    {
+        if (isset($options['stoplist']) && !file_exists($options['stoplist'])) {
+            throw new WrongStoplistSource('Error: cannot read the file: ' . $options['stoplist']);
+        }
+    }
+
+    protected function initStopWordsRegex(): void
+    {
+        $this->stopWordsRegex = $this->buildStopWordsRegex($this->options['stoplist']);
     }
 
     /**
@@ -184,10 +222,6 @@ class Rake
      */
     private function loadStopWords(string $stoplist): array
     {
-        if (!file_exists($stoplist)) {
-            throw new WrongStoplistSource('Error: cannot read the file: ' . $stoplist);
-        }
-
         $rawStopWords = @file($stoplist, FILE_IGNORE_NEW_LINES) ?: [];
 
         return array_filter($rawStopWords, function ($line) {
