@@ -25,6 +25,18 @@ class RakeTest extends TestCase
     }
 
     /** @test */
+    public function it_can_use_a_different_stoplist(): void
+    {
+        $service = new Rake(['stoplist' => __DIR__ . '/../fixtures/stoplist.txt']);
+        $text = 'this is a text';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(2, $words);
+        $this->assertArrayHasKey('this', $words);
+    }
+
+    /** @test */
     public function it_can_extract_words(): void
     {
         $text = 'split this phrase';
@@ -44,18 +56,6 @@ class RakeTest extends TestCase
 
         $this->assertCount(2, $words);
         $this->assertSame(1.0, current($words));
-    }
-
-    /** @test */
-    public function it_can_use_a_different_stoplist(): void
-    {
-        $service = new Rake(['stoplist' => __DIR__ . '/../fixtures/stoplist.txt']);
-        $text = 'this is a text';
-
-        $words = $service->extract($text);
-
-        $this->assertCount(2, $words);
-        $this->assertArrayHasKey('this', $words);
     }
 
     /** @test */
