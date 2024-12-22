@@ -2,6 +2,7 @@
 
 namespace Kudashevs\RakePhp\Tests\Unit;
 
+use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
 use Kudashevs\RakePhp\Exceptions\WrongStoplistSource;
 use Kudashevs\RakePhp\Rake;
 use PHPUnit\Framework\TestCase;
@@ -56,6 +57,26 @@ class RakeTest extends TestCase
 
         $this->assertCount(2, $words);
         $this->assertSame(1.0, current($words));
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_an_invalid_exclude_type(): void
+    {
+        $this->expectException(InvalidOptionType::class);
+        $this->expectExceptionMessage('array');
+
+        new Rake(['exclude' => 'wrong']);
+    }
+
+    /** @test */
+    public function it_can_exclude_words_from_a_stoplist(): void
+    {
+        $service = new Rake(['exclude' => ['this']]);
+        $text = 'split this phrase';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(1, $words);
     }
 
     /** @test */

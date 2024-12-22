@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kudashevs\RakePhp;
 
+use InvalidArgumentException;
+use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
 use Kudashevs\RakePhp\Exceptions\WrongStoplistSource;
 
 class Rake
@@ -14,21 +16,28 @@ class Rake
 
     /**
      * 'stoplist' string A default file with stop words.
+     * 'exclude' array An array of stop words exclusions.
      *
      * @var array{
      *     stoplist: string,
+     *     exclude: array<array-key, string>,
      * }
      */
     protected array $options = [
         'stoplist' => self::DEFAULT_STOPLIST_FILEPATH,
+        'exclude' => [],
     ];
 
     /**
-     * 'stoplist' string A valid file with stop words.
+     * 'stoplist' string A valid file with a list of stop words (stoplist).
+     * 'exclude' array An array of words that should be excluded from the stoplist.
      *
      * @param array{
      *     stoplist: string,
+     *     exclude: array<array-key, string>,
      * } $options
+     *
+     * @throws InvalidArgumentException
      */
     public function __construct(array $options = [])
     {
@@ -46,6 +55,10 @@ class Rake
 
     protected function validateOptions(array $options): void
     {
+        if (isset($options['exclude']) && !is_array($options['exclude'])) {
+            throw new InvalidOptionType('The exclude option must be an array');
+        }
+
         if (isset($options['stoplist']) && !file_exists($options['stoplist'])) {
             throw new WrongStoplistSource('Error: cannot read the file: ' . $options['stoplist']);
         }
@@ -236,11 +249,12 @@ class Rake
      */
     private function buildStopWordsRegex(string $stoplist): string
     {
-        $rawStopWords = $this->loadStopWords($stoplist);
+        $originalStopWords = $this->loadStopWords($stoplist);
+        $preparedStopWords = $this->prepareStopWords($originalStopWords);
 
         $bounderizedStopWords = array_map(function ($word) {
             return '\b' . $word . '\b';
-        }, $rawStopWords);
+        }, $preparedStopWords);
 
         return '/' . implode('|', $bounderizedStopWords) . '/i';
     }
@@ -257,5 +271,16 @@ class Rake
         return array_filter($rawStopWords, function ($line) {
             return $line[0] !== '#';
         });
+    }
+
+    /**
+     * Apply exclusions and inclusions to the list of stop words.
+     *
+     * @param array $words
+     * @return void
+     */
+    private function prepareStopWords(array $words): array
+    {
+        return array_diff($words, $this->options['exclude']);
     }
 }
