@@ -149,7 +149,7 @@ class Rake
      */
     protected function splitIntoPhrases(string $text): array
     {
-        return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]|\s\-\s/u', $text);
+        return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]/u', $text);
     }
 
     /**
@@ -163,11 +163,12 @@ class Rake
     protected function extractCandidateKeywords(string $text): array
     {
         $preprocessed = $this->preprocessText($text);
-        $phrases = $this->splitIntoPhrases($preprocessed);
+        $textWithoutStopWords = preg_replace($this->stopWordsRegex, '|', $preprocessed);
+        $phrases = $this->splitIntoPhrases($textWithoutStopWords);
 
         $candidates = [];
         foreach ($phrases as $phrase) {
-            $sequences = explode('|', preg_replace($this->stopWordsRegex, '|', $phrase));
+            $sequences = explode('|', $phrase);
 
             foreach ($sequences as $sequence) {
                 $sequence = strtolower(trim($sequence));
@@ -272,7 +273,7 @@ class Rake
             return '\b' . $word . '\b';
         }, $preparedStopWords);
 
-        return '/' . implode('|', $bounderizedStopWords) . '/i';
+        return '/' . implode('|', $bounderizedStopWords) . '|\s\-\s/i';
     }
 
     /**
