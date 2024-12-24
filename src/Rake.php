@@ -142,8 +142,8 @@ class Rake
     protected function extractCandidateKeywords(string $text): array
     {
         $preprocessed = $this->preprocessText($text);
-        $textWithoutStopWords = preg_replace($this->stopWordsRegex, '|', $preprocessed);
-        $phrases = $this->splitIntoPhrases($textWithoutStopWords);
+
+        $phrases = $this->splitIntoPhrases($preprocessed);
 
         $candidates = [];
         foreach ($phrases as $phrase) {
@@ -164,13 +164,16 @@ class Rake
     /**
      * The pre-processing includes the following steps:
      * - replace new lines with spaces
+     * - replace stop words with a replacement
      *
      * @param string $text
      * @return string
      */
     protected function preprocessText(string $text): string
     {
-        return preg_replace('/\R/', ' ', $text);
+        $textWithoutNewLines = preg_replace('/\R/', ' ', $text);
+
+        return preg_replace($this->stopWordsRegex, '|', $textWithoutNewLines);
     }
 
     /**
