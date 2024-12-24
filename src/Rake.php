@@ -170,7 +170,13 @@ class Rake
     {
         $textWithoutNewLines = preg_replace('/\R/', ' ', $text);
 
-        return preg_replace($this->stopWordsRegex, self::DEFAULT_STOP_WORDS_REPLACEMENT, $textWithoutNewLines);
+        $textWithoutStopWords = preg_replace(
+            $this->stopWordsRegex,
+            self::DEFAULT_STOP_WORDS_REPLACEMENT,
+            $textWithoutNewLines
+        );
+
+        return str_replace([' - '], self::DEFAULT_STOP_WORDS_REPLACEMENT, $textWithoutStopWords);
     }
 
     /**
@@ -276,7 +282,12 @@ class Rake
             return '\b' . $word . '\b';
         }, $preparedStopWords);
 
-        return '/' . implode('|', $bounderizedStopWords) . '|\s\-\s/i';
+        $regex = implode(
+            self::DEFAULT_STOP_WORDS_REPLACEMENT,
+            $bounderizedStopWords
+        );
+
+        return '/' . $regex . '/i';
     }
 
     /**
