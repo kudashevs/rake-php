@@ -132,27 +132,6 @@ class Rake
     }
 
     /**
-     * The pre-processing includes the following steps:
-     * - replace new lines with spaces
-     *
-     * @param string $text
-     * @return string
-     */
-    protected function preprocessText(string $text): string
-    {
-        return preg_replace('/\R/', ' ', $text);
-    }
-
-    /**
-     * @param string $text Text to be split into phrases
-     * @return array Array of phrases
-     */
-    protected function splitIntoPhrases(string $text): array
-    {
-        return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]/u', $text);
-    }
-
-    /**
      * Split phrases into of contiguous words. Words within a sequence are assigned
      * the same position in the text and together are considered a candidate keyword)
      * For more information @see 1.2.1 Candidate keywords.
@@ -180,6 +159,27 @@ class Rake
         }
 
         return $candidates;
+    }
+
+    /**
+     * The pre-processing includes the following steps:
+     * - replace new lines with spaces
+     *
+     * @param string $text
+     * @return string
+     */
+    protected function preprocessText(string $text): string
+    {
+        return preg_replace('/\R/', ' ', $text);
+    }
+
+    /**
+     * @param string $text Text to be split into phrases
+     * @return array Array of phrases
+     */
+    protected function splitIntoPhrases(string $text): array
+    {
+        return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]/u', $text);
     }
 
     /**
