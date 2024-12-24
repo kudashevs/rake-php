@@ -12,6 +12,8 @@ class Rake
 {
     protected const DEFAULT_STOPLIST_FILEPATH = __DIR__ . '/StopLists/SmartStoplist.txt';
 
+    protected const DEFAULT_STOP_WORDS_REPLACEMENT = '|';
+
     protected readonly string $stopWordsRegex;
 
     /**
@@ -168,7 +170,7 @@ class Rake
     {
         $textWithoutNewLines = preg_replace('/\R/', ' ', $text);
 
-        return preg_replace($this->stopWordsRegex, '|', $textWithoutNewLines);
+        return preg_replace($this->stopWordsRegex, self::DEFAULT_STOP_WORDS_REPLACEMENT, $textWithoutNewLines);
     }
 
     /**
@@ -177,7 +179,10 @@ class Rake
      */
     protected function splitIntoSequences(string $text): array
     {
-        return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}\|]/u', $text);
+        return preg_split(
+            '/[.!?,;:()\t\\\"\x{2018}\x{2019}\x{2013}' . self::DEFAULT_STOP_WORDS_REPLACEMENT . ']/u',
+            $text
+        );
     }
 
     /**
