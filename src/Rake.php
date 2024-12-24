@@ -238,10 +238,10 @@ class Rake
      */
     protected function splitIntoWords(string $text): array
     {
-        $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/u', $text, -1);
+        $words_temp = preg_split('/[^a-zA-Z0-9_+\-\/]/uS', $text, -1, PREG_SPLIT_NO_EMPTY);
 
         return array_filter($words_temp, function ($word) {
-            return $word !== '' && !(is_numeric($word));
+            return !(is_numeric($word));
         });
     }
 
