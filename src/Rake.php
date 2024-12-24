@@ -186,8 +186,10 @@ class Rake
     protected function splitIntoSequences(string $text): array
     {
         return preg_split(
-            '/[.!?,;:()\t\\\"\x{2018}\x{2019}\x{2013}' . self::DEFAULT_STOP_WORDS_REPLACEMENT . ']/u',
-            $text
+            '/[.!?,;:()\t\\\"\x{2018}\x{2019}\x{2013}' . self::DEFAULT_STOP_WORDS_REPLACEMENT . ']/uS',
+            $text,
+            -1,
+            PREG_SPLIT_NO_EMPTY,
         );
     }
 
