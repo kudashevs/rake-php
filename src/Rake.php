@@ -142,19 +142,14 @@ class Rake
     protected function extractCandidateKeywords(string $text): array
     {
         $preprocessed = $this->preprocessText($text);
-
-        $phrases = $this->splitIntoPhrases($preprocessed);
+        $sequences = $this->splitIntoSequences($preprocessed);
 
         $candidates = [];
-        foreach ($phrases as $phrase) {
-            $sequences = explode('|', $phrase);
+        foreach ($sequences as $sequence) {
+            $sequence = strtolower(trim($sequence));
 
-            foreach ($sequences as $sequence) {
-                $sequence = strtolower(trim($sequence));
-
-                if ($sequence !== '') {
-                    $candidates[] = $sequence;
-                }
+            if ($sequence !== '') {
+                $candidates[] = $sequence;
             }
         }
 
@@ -180,9 +175,9 @@ class Rake
      * @param string $text Text to be split into phrases
      * @return array Array of phrases
      */
-    protected function splitIntoPhrases(string $text): array
+    protected function splitIntoSequences(string $text): array
     {
-        return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}]/u', $text);
+        return preg_split('/[.!?,;:\t\\\"\(\)\x{2018}\x{2019}\x{2013}\|]/u', $text);
     }
 
     /**
