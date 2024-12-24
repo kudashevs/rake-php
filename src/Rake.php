@@ -93,9 +93,7 @@ class Rake
      */
     public function extract(string $text): array
     {
-        $preprocessed = $this->preprocessText($text);
-        $phrases = $this->splitIntoPhrases($preprocessed);
-        $keywordCandidates = $this->extractCandidateKeywords($phrases);
+        $keywordCandidates = $this->extractCandidateKeywords($text);
         $keywordScores = $this->calculateWordScores($keywordCandidates);
 
         $extractedKeywords = $this->generateExtractedKeywords($keywordCandidates, $keywordScores);
@@ -159,11 +157,14 @@ class Rake
      * the same position in the text and together are considered a candidate keyword)
      * For more information @see 1.2.1 Candidate keywords.
      *
-     * @param array $phrases Array of phrases
+     * @param string $text Input text
      * @return array Array of candidates
      */
-    protected function extractCandidateKeywords(array $phrases): array
+    protected function extractCandidateKeywords(string $text): array
     {
+        $preprocessed = $this->preprocessText($text);
+        $phrases = $this->splitIntoPhrases($preprocessed);
+
         $candidates = [];
         foreach ($phrases as $phrase) {
             $sequences = explode('|', preg_replace($this->stopWordsRegex, '|', $phrase));
