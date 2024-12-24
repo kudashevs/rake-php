@@ -284,10 +284,7 @@ class Rake
             return '\b' . $word . '\b';
         }, $preparedStopWords);
 
-        $regex = implode(
-            self::DEFAULT_STOP_WORDS_REPLACEMENT,
-            $bounderizedStopWords
-        );
+        $regex = implode('|', $bounderizedStopWords);
 
         return '/' . $regex . '/i';
     }
