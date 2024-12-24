@@ -262,7 +262,7 @@ class Rake
      *
      * @throws WrongStoplistSource
      */
-    private function buildStopWordsRegex(string $stoplist): string
+    protected function buildStopWordsRegex(string $stoplist): string
     {
         $originalStopWords = $this->loadStopWords($stoplist);
         $preparedStopWords = $this->prepareStopWords($originalStopWords);
@@ -279,7 +279,7 @@ class Rake
      *
      * @return array An array of stop words
      */
-    private function loadStopWords(string $stoplist): array
+    protected function loadStopWords(string $stoplist): array
     {
         $rawStopWords = @file($stoplist, FILE_IGNORE_NEW_LINES) ?: [];
 
