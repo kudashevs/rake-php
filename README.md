@@ -1,4 +1,8 @@
-# Rake PHP ![test workflow](https://github.com/kudashevs/rake-php/actions/workflows/run-tests.yml/badge.svg)
+# Rake PHP
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/kudashevs/rake-php.svg)](https://packagist.org/packages/kudashevs/rake-php)
+[![Run Tests](https://github.com/kudashevs/rake-php/actions/workflows/run-tests.yml/badge.svg)](https://github.com/kudashevs/rake-php/actions/workflows/run-tests.yml)
+[![License MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 
 A PHP implementation of the Rapid Automatic Keyword Extraction (RAKE) algorithm for extracting relevant keywords from
 individual documents.
