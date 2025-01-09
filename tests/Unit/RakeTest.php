@@ -5,6 +5,7 @@ namespace Kudashevs\RakePhp\Tests\Unit;
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
 use Kudashevs\RakePhp\Exceptions\WrongStoplistSource;
 use Kudashevs\RakePhp\Rake;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class RakeTest extends TestCase
@@ -16,7 +17,7 @@ class RakeTest extends TestCase
         $this->service = new Rake();
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_an_exception_when_a_wrong_stopwords_file(): void
     {
         $this->expectException(WrongStoplistSource::class);
@@ -25,7 +26,7 @@ class RakeTest extends TestCase
         new Rake(['stoplist' => 'wrong']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_use_a_different_stoplist(): void
     {
         $service = new Rake(['stoplist' => __DIR__ . '/../fixtures/stoplist.txt']);
@@ -37,7 +38,7 @@ class RakeTest extends TestCase
         $this->assertArrayHasKey('this', $words);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_extract_words(): void
     {
         $text = 'split this phrase';
@@ -48,7 +49,7 @@ class RakeTest extends TestCase
         $this->assertSame('split', current($words));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_extract_scores(): void
     {
         $text = 'split this phrase';
@@ -59,7 +60,7 @@ class RakeTest extends TestCase
         $this->assertSame(1.0, current($words));
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_an_exception_when_an_invalid_exclude_type(): void
     {
         $this->expectException(InvalidOptionType::class);
@@ -68,7 +69,7 @@ class RakeTest extends TestCase
         new Rake(['exclude' => 'wrong']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_exclude_words_from_a_stoplist(): void
     {
         $service = new Rake(['exclude' => ['this']]);
@@ -79,7 +80,7 @@ class RakeTest extends TestCase
         $this->assertCount(1, $words);
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_an_exception_when_an_invalid_include_type(): void
     {
         $this->expectException(InvalidOptionType::class);
@@ -88,7 +89,7 @@ class RakeTest extends TestCase
         new Rake(['include' => 'wrong']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_include_words_to_a_stoplist(): void
     {
         $service = new Rake(['include' => ['split', 'phrase']]);
@@ -99,7 +100,7 @@ class RakeTest extends TestCase
         $this->assertCount(0, $words);
     }
 
-    /** @test */
+    #[Test]
     public function it_cannot_split_when_no_stop_words_in_a_text(): void
     {
         $text = 'unsplit phrase';
@@ -109,7 +110,7 @@ class RakeTest extends TestCase
         $this->assertCount(1, $words);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_split_words(): void
     {
         $text = 'split this phrase';
@@ -119,7 +120,7 @@ class RakeTest extends TestCase
         $this->assertCount(2, $words);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_split_a_numeric(): void
     {
         $text = 'split these 42 words';
@@ -129,7 +130,7 @@ class RakeTest extends TestCase
         $this->assertCount(2, $words);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_split_a_numeric_with_u2018(): void
     {
         $text = 'split these 4’2 words';
@@ -139,7 +140,7 @@ class RakeTest extends TestCase
         $this->assertCount(3, $words);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_split_with_new_lines(): void
     {
         $text = "split\nthese\n42\nwords\n";
