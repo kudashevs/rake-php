@@ -77,6 +77,14 @@ The `Rake` class accepts some configuration options:
 **Note:** At the moment of instantiation, the `Rake` class can throw a few exceptions: `InvalidOptionType`, `WrongStoplistSource`.
 All of these exceptions extend a built-in `InvalidArgumentException` class, so they are easy to deal with.
 
+
+## Testing
+
+```bash
+composer test
+```
+
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
