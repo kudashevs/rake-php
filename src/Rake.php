@@ -238,7 +238,7 @@ class Rake
      */
     protected function preprocessText(string $text): string
     {
-        $textWithoutNewLines = preg_replace('/\R/', ' ', $text);
+        $textWithoutNewLines = preg_replace('/\R+/', ' ', $text);
 
         $textWithoutStopWords = preg_replace(
             $this->stopWordsRegex,
