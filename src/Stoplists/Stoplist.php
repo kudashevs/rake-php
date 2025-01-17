@@ -13,6 +13,8 @@ namespace Kudashevs\RakePhp\Stoplists;
 interface Stoplist
 {
     /**
+     * Return a list of stop words.
+     *
      * @return array<array-key, string>
      */
     public function getWords(): array;
