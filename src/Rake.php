@@ -7,12 +7,16 @@ namespace Kudashevs\RakePhp;
 use InvalidArgumentException;
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
 use Kudashevs\RakePhp\Exceptions\WrongStoplistSource;
+use Kudashevs\RakePhp\Stoplists\SmartStoplist;
+use Kudashevs\RakePhp\Stoplists\Stoplist;
 
 class Rake
 {
-    protected const DEFAULT_STOPLIST_FILEPATH = __DIR__ . '/StopLists/SmartStoplist.txt';
+    protected const DEFAULT_STOPLIST = SmartStoplist::class;
 
     protected const DEFAULT_STOP_WORDS_REPLACEMENT = '|';
+
+    protected Stoplist $stoplist;
 
     protected readonly string $stopWordsRegex;
 
@@ -28,7 +32,6 @@ class Rake
      * }
      */
     protected array $options = [
-        'stoplist' => self::DEFAULT_STOPLIST_FILEPATH,
         'exclude' => [],
         'include' => [],
     ];
@@ -49,6 +52,7 @@ class Rake
     public function __construct(array $options = [])
     {
         $this->initOptions($options);
+        $this->initStoplist($options);
 
         $this->initStopWordsRegex();
     }
@@ -61,6 +65,11 @@ class Rake
         $this->validateOptions($options);
 
         $this->options = array_merge($this->options, $options);
+    }
+
+    protected function initStoplist(array $options): void
+    {
+        $this->stoplist = $options['stoplist'] ?? new (self::DEFAULT_STOPLIST)();
     }
 
     /**
@@ -76,14 +85,14 @@ class Rake
             throw new InvalidOptionType('The include option must be an array');
         }
 
-        if (isset($options['stoplist']) && !file_exists($options['stoplist'])) {
-            throw new WrongStoplistSource('Error: cannot read the file: ' . $options['stoplist']);
+        if (isset($options['stoplist']) && !$options['stoplist'] instanceof Stoplist) {
+            throw new WrongStoplistSource('The stoplist option must be of type Stoplist.');
         }
     }
 
     protected function initStopWordsRegex(): void
     {
-        $this->stopWordsRegex = $this->buildStopWordsRegex($this->options['stoplist']);
+        $this->stopWordsRegex = $this->buildStopWordsRegex();
     }
 
     /**
@@ -275,10 +284,11 @@ class Rake
      *
      * @throws WrongStoplistSource
      */
-    protected function buildStopWordsRegex(string $stoplist): string
+    protected function buildStopWordsRegex(): string
     {
-        $originalStopWords = $this->loadStopWords($stoplist);
-        $preparedStopWords = $this->prepareStopWords($originalStopWords);
+        $preparedStopWords = $this->prepareStopWords(
+            $this->stoplist->getWords()
+        );
 
         $bounderizedStopWords = array_map(function ($word) {
             return '\b' . $word . '\b';
@@ -287,20 +297,6 @@ class Rake
         $regex = implode('|', $bounderizedStopWords);
 
         return '/' . $regex . '/i';
-    }
-
-    /**
-     * Load stop words from a provided source.
-     *
-     * @return array An array of stop words
-     */
-    protected function loadStopWords(string $stoplist): array
-    {
-        $rawStopWords = @file($stoplist, FILE_IGNORE_NEW_LINES) ?: [];
-
-        return array_filter($rawStopWords, function ($line) {
-            return $line[0] !== '#';
-        });
     }
 
     /**

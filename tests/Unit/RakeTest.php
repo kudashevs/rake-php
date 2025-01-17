@@ -5,6 +5,7 @@ namespace Kudashevs\RakePhp\Tests\Unit;
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
 use Kudashevs\RakePhp\Exceptions\WrongStoplistSource;
 use Kudashevs\RakePhp\Rake;
+use Kudashevs\RakePhp\Stoplists\Stoplist;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +22,7 @@ class RakeTest extends TestCase
     public function it_throws_an_exception_when_a_wrong_stopwords_file(): void
     {
         $this->expectException(WrongStoplistSource::class);
-        $this->expectExceptionMessage('wrong');
+        $this->expectExceptionMessage('of type');
 
         new Rake(['stoplist' => 'wrong']);
     }
@@ -29,7 +30,10 @@ class RakeTest extends TestCase
     #[Test]
     public function it_can_use_a_different_stoplist(): void
     {
-        $service = new Rake(['stoplist' => __DIR__ . '/../fixtures/stoplist.txt']);
+        $stub = $this->createStub(Stoplist::class);
+        $stub->method('getWords')
+            ->willReturn(['a', 'is']);
+        $service = new Rake(['stoplist' => $stub]);
         $text = 'this is a text';
 
         $words = $service->extract($text);
