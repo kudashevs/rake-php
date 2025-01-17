@@ -96,6 +96,67 @@ class Rake
     }
 
     /**
+     * Retrieves stop words and generates a stop words regex.
+     *
+     * @throws WrongStoplistSource
+     */
+    protected function buildStopWordsRegex(): string
+    {
+        $preparedStopWords = $this->prepareStopWords(
+            $this->stoplist->getWords()
+        );
+
+        $bounderizedStopWords = array_map(function ($word) {
+            return '\b' . $word . '\b';
+        }, $preparedStopWords);
+
+        $regex = implode('|', $bounderizedStopWords);
+
+        return '/' . $regex . '/i';
+    }
+
+    /**
+     * The preparation process includes the following steps:
+     * - apply exclusions to the list of stop words
+     * - apply inclusions to the list of stop words
+     *
+     * @param array $words
+     * @return void
+     */
+    private function prepareStopWords(array $rawWords): array
+    {
+        $words = $this->prepareWords($rawWords);
+        $exclusions = $this->getPreparedExclusions();
+        $inclusions = $this->getPreparedInclusions();
+
+        $withoutExclusions = array_diff($words, $exclusions);
+
+        return array_merge($withoutExclusions, $inclusions);
+    }
+
+    protected function prepareWords(array $words): array
+    {
+        return $this->prepareWordsForStoplist($words);
+    }
+
+    protected function getPreparedExclusions(): array
+    {
+        return $this->prepareWordsForStoplist($this->options['exclude']);
+    }
+
+    protected function getPreparedInclusions(): array
+    {
+        return $this->prepareWordsForStoplist($this->options['include']);
+    }
+
+    protected function prepareWordsForStoplist(array $words): array
+    {
+        return array_filter($words, function ($word) {
+            return is_string($word) && !preg_match('/^\s+$/i', $word);
+        });
+    }
+
+    /**
      * Apply the RAKE (Rapid Automatic Keyword Extraction) algorithm
      * to a text and return a list of results in the keyword => score format.
      *
@@ -277,66 +338,5 @@ class Rake
         }
 
         return $extractedKeywords;
-    }
-
-    /**
-     * Retrieves stop words and generates a stop words regex.
-     *
-     * @throws WrongStoplistSource
-     */
-    protected function buildStopWordsRegex(): string
-    {
-        $preparedStopWords = $this->prepareStopWords(
-            $this->stoplist->getWords()
-        );
-
-        $bounderizedStopWords = array_map(function ($word) {
-            return '\b' . $word . '\b';
-        }, $preparedStopWords);
-
-        $regex = implode('|', $bounderizedStopWords);
-
-        return '/' . $regex . '/i';
-    }
-
-    /**
-     * The preparation process includes the following steps:
-     * - apply exclusions to the list of stop words
-     * - apply inclusions to the list of stop words
-     *
-     * @param array $words
-     * @return void
-     */
-    private function prepareStopWords(array $rawWords): array
-    {
-        $words = $this->prepareWords($rawWords);
-        $exclusions = $this->getPreparedExclusions();
-        $inclusions = $this->getPreparedInclusions();
-
-        $withoutExclusions = array_diff($words, $exclusions);
-
-        return array_merge($withoutExclusions, $inclusions);
-    }
-
-    protected function prepareWords(array $words): array
-    {
-        return $this->prepareWordsForStoplist($words);
-    }
-
-    protected function getPreparedExclusions(): array
-    {
-        return $this->prepareWordsForStoplist($this->options['exclude']);
-    }
-
-    protected function getPreparedInclusions(): array
-    {
-        return $this->prepareWordsForStoplist($this->options['include']);
-    }
-
-    protected function prepareWordsForStoplist(array $words): array
-    {
-        return array_filter($words, function ($word) {
-            return is_string($word) && !preg_match('/^\s+$/i', $word);
-        });
     }
 }
