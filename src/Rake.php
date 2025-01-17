@@ -21,12 +21,10 @@ class Rake
     protected readonly string $stopWordsRegex;
 
     /**
-     * 'stoplist' string A default file with stop words.
      * 'exclude' array An array of stop words exclusions.
      * 'include' array An array of stop words inclusions.
      *
      * @var array{
-     *     stoplist: string,
      *     exclude: array<array-key, string>,
      *     include: array<array-key, string>,
      * }
