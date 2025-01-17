@@ -3,7 +3,6 @@
 namespace Kudashevs\RakePhp\Tests\Unit;
 
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
-use Kudashevs\RakePhp\Exceptions\WrongStoplistSource;
 use Kudashevs\RakePhp\Rake;
 use Kudashevs\RakePhp\Stoplists\Stoplist;
 use PHPUnit\Framework\Attributes\Test;
@@ -21,7 +20,7 @@ class RakeTest extends TestCase
     #[Test]
     public function it_throws_an_exception_when_a_wrong_stopwords_file(): void
     {
-        $this->expectException(WrongStoplistSource::class);
+        $this->expectException(InvalidOptionType::class);
         $this->expectExceptionMessage('of type');
 
         new Rake(['stoplist' => 'wrong']);

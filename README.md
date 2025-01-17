@@ -74,8 +74,8 @@ The `Rake` class accepts some configuration options:
 'include' => []              # An array of words that will be included in the stoplist
 ```
 
-**Note:** At the moment of instantiation, the `Rake` class can throw a few exceptions: `InvalidOptionType`, `WrongStoplistSource`.
-All of these exceptions extend a built-in `InvalidArgumentException` class, so they are easy to deal with.
+**Note:** At the moment of instantiation, the `Rake` class may throw a few exceptions: `InvalidOptionType`. The exceptions
+extend a built-in `InvalidArgumentException` class, so they are easy to deal with.
 
 
 ## Testing

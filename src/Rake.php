@@ -80,7 +80,7 @@ class Rake
     protected function validateStoplist(array $options): void
     {
         if (isset($options['stoplist']) && !$options['stoplist'] instanceof Stoplist) {
-            throw new WrongStoplistSource('The stoplist option must be of type Stoplist.');
+            throw new InvalidOptionType('The stoplist option must be of type Stoplist.');
         }
     }
 
