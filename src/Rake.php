@@ -333,12 +333,8 @@ class Rake
 
     protected function prepareWordsForStoplist(array $words): array
     {
-        return array_reduce($words, function ($preparedWords, $word) {
-            if (is_string($word) && trim($word) !== '') {
-                $preparedWords[] = strtolower($word);
-            }
-
-            return $preparedWords;
-        }, []);
+        return array_filter($words, function ($word) {
+            return is_string($word) && !preg_match('/^\s+$/i', $word);
+        });
     }
 }
