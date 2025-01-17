@@ -112,7 +112,7 @@ class Rake
 
         $regex = implode('|', $bounderizedStopWords);
 
-        return '/' . $regex . '/i';
+        return '/' . $regex . '/iSU';
     }
 
     /**
