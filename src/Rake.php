@@ -49,8 +49,10 @@ class Rake
      */
     public function __construct(array $options = [])
     {
-        $this->initOptions($options);
+        $this->validateOptions($options);
+
         $this->initStoplist($options);
+        $this->initOptions($options);
 
         $this->initStopWordsRegex();
     }
@@ -58,34 +60,41 @@ class Rake
     /**
      * @throws InvalidArgumentException
      */
+    protected function validateOptions(array $options): void
+    {
+        $this->validateIncludeExclude($options);
+        $this->validateStoplist($options);
+    }
+
+    protected function validateIncludeExclude(array $options): void
+    {
+        if (isset($options['exclude']) && !is_array($options['exclude'])) {
+            throw new InvalidOptionType('The exclude option must be an array.');
+        }
+
+        if (isset($options['include']) && !is_array($options['include'])) {
+            throw new InvalidOptionType('The include option must be an array.');
+        }
+    }
+
+    protected function validateStoplist(array $options): void
+    {
+        if (isset($options['stoplist']) && !$options['stoplist'] instanceof Stoplist) {
+            throw new WrongStoplistSource('The stoplist option must be of type Stoplist.');
+        }
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     protected function initOptions(array $options): void
     {
-        $this->validateOptions($options);
-
         $this->options = array_merge($this->options, $options);
     }
 
     protected function initStoplist(array $options): void
     {
         $this->stoplist = $options['stoplist'] ?? new (self::DEFAULT_STOPLIST)();
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    protected function validateOptions(array $options): void
-    {
-        if (isset($options['exclude']) && !is_array($options['exclude'])) {
-            throw new InvalidOptionType('The exclude option must be an array');
-        }
-
-        if (isset($options['include']) && !is_array($options['include'])) {
-            throw new InvalidOptionType('The include option must be an array');
-        }
-
-        if (isset($options['stoplist']) && !$options['stoplist'] instanceof Stoplist) {
-            throw new WrongStoplistSource('The stoplist option must be of type Stoplist.');
-        }
     }
 
     protected function initStopWordsRegex(): void
