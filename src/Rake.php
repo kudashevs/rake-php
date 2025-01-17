@@ -309,9 +309,16 @@ class Rake
      */
     private function prepareStopWords(array $words): array
     {
-        $withoutExclusions = array_diff($words, $this->prepareExclusions());
+        $preparedWords = $this->prepareWords($words);
+
+        $withoutExclusions = array_diff($preparedWords, $this->prepareExclusions());
 
         return array_merge($withoutExclusions, $this->prepareInclusions());
+    }
+
+    protected function prepareWords(array $words): array
+    {
+        return $this->prepareWordsForStoplist($words);
     }
 
     protected function prepareExclusions(): array
