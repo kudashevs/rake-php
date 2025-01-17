@@ -21,17 +21,17 @@ class Rake
     protected readonly string $stopWordsRegex;
 
     /**
-     * 'exclude' array An array of stop words exclusions.
      * 'include' array An array of stop words inclusions.
+     * 'exclude' array An array of stop words exclusions.
      *
      * @var array{
-     *     exclude: array<array-key, string>,
      *     include: array<array-key, string>,
+     *     exclude: array<array-key, string>,
      * }
      */
     protected array $options = [
-        'exclude' => [],
         'include' => [],
+        'exclude' => [],
     ];
 
     /**
