@@ -310,8 +310,8 @@ class Rake
     private function prepareStopWords(array $rawWords): array
     {
         $words = $this->prepareWords($rawWords);
-        $exclusions = $this->prepareExclusions();
-        $inclusions = $this->prepareInclusions();
+        $exclusions = $this->getPreparedExclusions();
+        $inclusions = $this->getPreparedInclusions();
 
         $withoutExclusions = array_diff($words, $exclusions);
 
@@ -323,12 +323,12 @@ class Rake
         return $this->prepareWordsForStoplist($words);
     }
 
-    protected function prepareExclusions(): array
+    protected function getPreparedExclusions(): array
     {
         return $this->prepareWordsForStoplist($this->options['exclude']);
     }
 
-    protected function prepareInclusions(): array
+    protected function getPreparedInclusions(): array
     {
         return $this->prepareWordsForStoplist($this->options['include']);
     }
