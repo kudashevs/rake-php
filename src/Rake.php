@@ -147,15 +147,18 @@ class Rake
         }
     }
 
+    /**
+     * Generate and initialize a regex with registered stop words.
+     */
     protected function initStopWordsRegex(): void
     {
         $this->stopWordsRegex = $this->buildStopWordsRegex();
     }
 
     /**
-     * Retrieves stop words and generates a stop words regex.
+     * Generate a stop words regex from a provided stoplist.
      *
-     * @throws WrongStoplistSource
+     * @return string
      */
     protected function buildStopWordsRegex(): string
     {
