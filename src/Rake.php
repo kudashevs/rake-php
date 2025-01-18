@@ -168,21 +168,6 @@ class Rake
         return $this->generateStopWordsRegex($preparedStopWords, $specialCases);
     }
 
-    protected function generateStopWordsRegex(array $stopWords, array $specialCases): string
-    {
-        $regexParts = array_map(function ($word) use ($specialCases) {
-            if (array_key_exists($word, $specialCases)) {
-                return '\b(?-i)(?!' . $specialCases[$word] . ')(?i)' . $word . '\b';
-            }
-
-            return '\b' . $word . '\b';
-        }, $stopWords);
-
-        $regexBody = implode('|', $regexParts);
-
-        return '/' . $regexBody . '/iSU';
-    }
-
     /**
      * The preparation process includes the following steps:
      * - apply exclusions to the list of stop words
@@ -232,6 +217,21 @@ class Rake
             $cases[strtolower($case)] = $case;
             return $cases;
         }, []);
+    }
+
+    protected function generateStopWordsRegex(array $stopWords, array $specialCases): string
+    {
+        $regexParts = array_map(function ($word) use ($specialCases) {
+            if (array_key_exists($word, $specialCases)) {
+                return '\b(?-i)(?!' . $specialCases[$word] . ')(?i)' . $word . '\b';
+            }
+
+            return '\b' . $word . '\b';
+        }, $stopWords);
+
+        $regexBody = implode('|', $regexParts);
+
+        return '/' . $regexBody . '/iSU';
     }
 
     /**
