@@ -103,10 +103,26 @@ class Rake
     /**
      * @throws InvalidArgumentException
      */
+    protected function initStoplist(array $options): void
+    {
+        $this->validateStoplist($options);
+
+        $this->stoplist = $options['stoplist'] ?? new (self::DEFAULT_STOPLIST)();
+    }
+
+    protected function validateStoplist(array $options): void
+    {
+        if (isset($options['stoplist']) && !$options['stoplist'] instanceof Stoplist) {
+            throw new InvalidOptionType('The stoplist option must be of type Stoplist.');
+        }
+    }
+
+
+    /**
+     * @throws InvalidArgumentException
+     */
     protected function validateOptions(array $options): void
     {
-        $this->validateIncludeExclude($options);
-        $this->validateStoplist($options);
         $this->validateModifiers($options);
     }
 
