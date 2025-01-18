@@ -3,6 +3,7 @@
 namespace Kudashevs\RakePhp\Tests\Unit;
 
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
+use Kudashevs\RakePhp\Modifiers\Modifier;
 use Kudashevs\RakePhp\Rake;
 use Kudashevs\RakePhp\Stoplists\Stoplist;
 use PHPUnit\Framework\Attributes\Test;
@@ -35,6 +36,22 @@ class RakeTest extends TestCase
 
         $service = new Rake(['stoplist' => $stoplistStub]);
         $text = 'this is a text';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(2, $words);
+        $this->assertArrayHasKey('this', $words);
+    }
+
+    #[Test]
+    public function it_can_apply_modifiers(): void
+    {
+        $modifierStub = $this->createStub(Modifier::class);
+        $modifierStub->method('modify')
+            ->willReturn(['test', 'this']);
+
+        $service = new Rake(['modifiers' => $modifierStub]);
+        $text = 'this is a test';
 
         $words = $service->extract($text);
 

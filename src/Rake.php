@@ -6,7 +6,7 @@ namespace Kudashevs\RakePhp;
 
 use InvalidArgumentException;
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
-use Kudashevs\RakePhp\Exceptions\WrongStoplistSource;
+use Kudashevs\RakePhp\Modifiers\Modifier;
 use Kudashevs\RakePhp\Stoplists\SmartStoplist;
 use Kudashevs\RakePhp\Stoplists\Stoplist;
 
@@ -16,9 +16,12 @@ class Rake
 
     protected const DEFAULT_STOP_WORDS_REPLACEMENT = '|';
 
+    protected readonly string $stopWordsRegex;
+
     protected Stoplist $stoplist;
 
-    protected readonly string $stopWordsRegex;
+    /** @var array<array-key, Modifier> */
+    protected array $modifiers = [];
 
     /**
      * 'include' array An array of stop words inclusions.
@@ -35,14 +38,16 @@ class Rake
     ];
 
     /**
-     * 'stoplist' string A valid file with a list of stop words (stoplist).
-     * 'exclude' array An array of words that should be excluded from the stoplist.
-     * 'include' array An array of words that should be included in the stoplist.
+     * 'stoplist'   string A valid file with a list of stop words (stoplist).
+     * 'include'    array An array of words that should be included in the stoplist.
+     * 'exclude'    array An array of words that should be excluded from the stoplist.
+     * 'modifiers'  array An array of Modifiers.
      *
      * @param array{
      *     stoplist: string,
-     *     exclude: array<array-key, string>,
      *     include: array<array-key, string>,
+     *     exclude: array<array-key, string>,
+     *     modifiers: array<array-key, Modifier>
      * } $options
      *
      * @throws InvalidArgumentException
@@ -53,6 +58,7 @@ class Rake
 
         $this->initStoplist($options);
         $this->initOptions($options);
+        $this->initModifiers($options);
 
         $this->initStopWordsRegex();
     }
@@ -64,6 +70,7 @@ class Rake
     {
         $this->validateIncludeExclude($options);
         $this->validateStoplist($options);
+        $this->validateModifiers($options);
     }
 
     protected function validateIncludeExclude(array $options): void
@@ -84,6 +91,28 @@ class Rake
         }
     }
 
+    protected function validateModifiers(array $options): void
+    {
+        if (
+            isset($options['modifiers'])
+            && !is_string($options['modifiers'])
+            && !is_object($options['modifiers'])
+            && !is_array($options['modifiers'])
+        ) {
+            throw new InvalidOptionType('The modifiers option must be a string, an instance, or an array.');
+        }
+
+        $modifiers = (is_string($options['modifiers']) || is_object(
+                $options['modifiers']
+            )) ? [$options['modifiers']] : $options['modifiers'];
+
+        foreach ($modifiers as $modifier) {
+            if (!is_a($modifier, Modifier::class, true)) {
+                throw new InvalidOptionType('The modifiers option must contain values of type Modifier.');
+            }
+        }
+    }
+
     /**
      * @throws InvalidArgumentException
      */
@@ -95,6 +124,21 @@ class Rake
     protected function initStoplist(array $options): void
     {
         $this->stoplist = $options['stoplist'] ?? new (self::DEFAULT_STOPLIST)();
+    }
+
+    protected function initModifiers(array $options): void
+    {
+        $modifiers = (is_string($options['modifiers']) || is_object(
+                $options['modifiers']
+            )) ? [$options['modifiers']] : $options['modifiers'];
+
+        foreach ($modifiers as $modifier) {
+            if (is_string($modifier)) {
+                $modifier = new $modifier();
+            }
+
+            $this->modifiers[] = $modifier;
+        }
     }
 
     protected function initStopWordsRegex(): void
@@ -173,6 +217,13 @@ class Rake
     public function extract(string $text): array
     {
         $keywordCandidates = $this->extractCandidateKeywords($text);
+
+        /*
+         * This step is not a part of the RAKE algorithm. However, we want to make the result more manageable and flexible.
+         * To do this, the package introduces a Modifier abstraction that can alter or change the output of the algorithm.
+         */
+        $keywordCandidates = $this->applyModifiers($keywordCandidates);
+
         $keywordScores = $this->calculateWordScores($keywordCandidates);
 
         $extractedKeywords = $this->generateExtractedKeywords($keywordCandidates, $keywordScores);
@@ -268,6 +319,17 @@ class Rake
             -1,
             PREG_SPLIT_NO_EMPTY,
         );
+    }
+
+    protected function applyModifiers(array $sequences): array
+    {
+        $mutated = $sequences;
+
+        foreach ($this->modifiers as $modifier) {
+            $mutated = $modifier->modify($sequences);
+        }
+
+        return $mutated;
     }
 
     /**
