@@ -166,8 +166,8 @@ class Rake
      * - apply exclusions to the list of stop words
      * - apply inclusions to the list of stop words
      *
-     * @param array $words
-     * @return void
+     * @param array $rawWords
+     * @return array
      */
     private function prepareStopWords(array $rawWords): array
     {
