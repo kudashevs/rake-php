@@ -66,7 +66,7 @@ class Rake
      */
     protected function initModifiers(array $options): void
     {
-        $this->validateModifiers($options);
+        $this->validateModifiersOption($options);
 
         $modifiers = $this->normalizeModifiers($options);
 
@@ -83,7 +83,7 @@ class Rake
         }
     }
 
-    protected function validateModifiers(array $options): void
+    protected function validateModifiersOption(array $options): void
     {
         if (
             isset($options['modifiers'])
@@ -114,12 +114,12 @@ class Rake
      */
     protected function initStoplist(array $options): void
     {
-        $this->validateStoplist($options);
+        $this->validateStoplistOption($options);
 
         $this->stoplist = $options['stoplist'] ?? new (self::DEFAULT_STOPLIST)();
     }
 
-    protected function validateStoplist(array $options): void
+    protected function validateStoplistOption(array $options): void
     {
         if (isset($options['stoplist']) && !$options['stoplist'] instanceof Stoplist) {
             throw new InvalidOptionType('The stoplist option must be of type Stoplist.');
@@ -131,12 +131,12 @@ class Rake
      */
     protected function initOptions(array $options): void
     {
-        $this->validateIncludeExclude($options);
+        $this->validateIncludeExcludeOption($options);
 
         $this->options = array_merge($this->options, $options);
     }
 
-    protected function validateIncludeExclude(array $options): void
+    protected function validateIncludeExcludeOption(array $options): void
     {
         if (isset($options['exclude']) && !is_array($options['exclude'])) {
             throw new InvalidOptionType('The exclude option must be an array.');
