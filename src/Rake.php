@@ -18,10 +18,10 @@ class Rake
 
     protected readonly string $stopWordsRegex;
 
-    protected Stoplist $stoplist;
-
     /** @var array<array-key, Modifier> */
     protected array $modifiers = [];
+
+    protected Stoplist $stoplist;
 
     /**
      * 'include' array An array of stop words inclusions.
@@ -38,16 +38,16 @@ class Rake
     ];
 
     /**
-     * 'stoplist'   string A valid file with a list of stop words (stoplist).
+     * 'modifiers'  array An array of Modifiers (@see Modifier::class).
+     * 'stoplist'   Stoplist An instance of a Stoplist (@see Stoplist::class).
      * 'include'    array An array of words that should be included in the stoplist.
      * 'exclude'    array An array of words that should be excluded from the stoplist.
-     * 'modifiers'  array An array of Modifiers.
      *
      * @param array{
-     *     stoplist: string,
+     *     modifiers: array<array-key, Modifier>,
+     *     stoplist: Stoplist,
      *     include: array<array-key, string>,
      *     exclude: array<array-key, string>,
-     *     modifiers: array<array-key, Modifier>
      * } $options
      *
      * @throws InvalidArgumentException
