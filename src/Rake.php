@@ -68,10 +68,7 @@ class Rake
     {
         $this->validateModifiers($options);
 
-        $modifiers = (
-            is_string($options['modifiers'])
-            || is_object($options['modifiers'])
-        ) ? [$options['modifiers']] : $options['modifiers'];
+        $modifiers = $this->normalizeModifiers($options);
 
         foreach ($modifiers as $modifier) {
             if (!is_a($modifier, Modifier::class, true)) {
@@ -96,6 +93,20 @@ class Rake
         ) {
             throw new InvalidOptionType('The modifiers option must be a string, an instance, or an array.');
         }
+    }
+
+    protected function normalizeModifiers(array $options): array
+    {
+        if (!isset($options['modifiers'])) {
+            return [];
+        }
+
+        return (
+            is_string($options['modifiers'])
+            || is_object($options['modifiers'])
+        )
+            ? [$options['modifiers']]
+            : $options['modifiers'];
     }
 
     /**
