@@ -60,6 +60,23 @@ class RakeTest extends TestCase
     }
 
     #[Test]
+    public function it_can_apply_modifiers_and_clean_the_results(): void
+    {
+        $modifierStub = $this->createStub(Modifier::class);
+        $modifierStub->method('modify')
+            ->willReturn(['test ', ' ', '   this']);
+
+        $service = new Rake(['modifiers' => $modifierStub]);
+        $text = 'this is a test';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(2, $words);
+        $this->assertArrayHasKey('test', $words);
+        $this->assertArrayHasKey('this', $words);
+    }
+
+    #[Test]
     public function it_can_extract_words(): void
     {
         $text = 'split this phrase';

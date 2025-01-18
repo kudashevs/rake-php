@@ -329,7 +329,13 @@ class Rake
             $mutated = $modifier->modify($sequences);
         }
 
-        return $mutated;
+        return array_reduce($mutated, function ($acc, $sequence) {
+            if (!preg_match('/^\s+$/i', $sequence)) {
+                $acc[] = trim($sequence);
+            }
+
+            return $acc;
+        });
     }
 
     /**
