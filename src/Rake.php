@@ -329,13 +329,18 @@ class Rake
             $mutated = $modifier->modify($sequences);
         }
 
-        return array_reduce($mutated, function ($acc, $sequence) {
+        return $this->cleanUpAfterModification($mutated);
+    }
+
+    protected function cleanUpAfterModification(array $sequences): array
+    {
+        return array_reduce($sequences, function ($acc, $sequence) {
             if (!preg_match('/^\s+$/i', $sequence)) {
                 $acc[] = trim($sequence);
             }
 
             return $acc;
-        });
+        }, []);
     }
 
     /**
