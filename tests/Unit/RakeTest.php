@@ -18,7 +18,7 @@ class RakeTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_an_exception_when_a_wrong_stopwords_file(): void
+    public function it_throws_an_exception_when_a_wrong_stoplist(): void
     {
         $this->expectException(InvalidOptionType::class);
         $this->expectExceptionMessage('of type');
