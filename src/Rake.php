@@ -152,13 +152,28 @@ class Rake
             $this->stoplist->getWords()
         );
 
-        $bounderizedStopWords = array_map(function ($word) {
+        $specialCases = $this->prepareSpecialCases($preparedStopWords);
+
+        $bounderizedStopWords = array_map(function ($word) use ($specialCases) {
+            if (array_key_exists($word, $specialCases)) {
+                return '\b(?-i)(?!' . $specialCases[$word] . ')(?i)' . $word . '\b';
+            }
             return '\b' . $word . '\b';
         }, $preparedStopWords);
 
         $regex = implode('|', $bounderizedStopWords);
 
         return '/' . $regex . '/iSU';
+    }
+
+    private function prepareSpecialCases(array $words): array
+    {
+        $exclusions = $this->getPreparedExclusions();
+
+        return array_reduce(array_diff($exclusions, $words), function ($cases, $case) {
+            $cases[strtolower($case)] = $case;
+            return $cases;
+        }, []);
     }
 
     /**

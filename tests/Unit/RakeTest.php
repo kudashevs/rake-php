@@ -119,6 +119,17 @@ class RakeTest extends TestCase
     }
 
     #[Test]
+    public function it_can_exclude_words_from_a_stoplist_in_a_different_case(): void
+    {
+        $service = new Rake(['exclude' => ['New']]);
+        $text = 'visit New York now';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(1, $words);
+    }
+
+    #[Test]
     public function it_throws_an_exception_when_an_invalid_include_type(): void
     {
         $this->expectException(InvalidOptionType::class);
