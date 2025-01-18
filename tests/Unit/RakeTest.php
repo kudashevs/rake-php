@@ -29,10 +29,11 @@ class RakeTest extends TestCase
     #[Test]
     public function it_can_use_a_different_stoplist(): void
     {
-        $stub = $this->createStub(Stoplist::class);
-        $stub->method('getWords')
+        $stoplistStub = $this->createStub(Stoplist::class);
+        $stoplistStub->method('getWords')
             ->willReturn(['a', 'is']);
-        $service = new Rake(['stoplist' => $stub]);
+
+        $service = new Rake(['stoplist' => $stoplistStub]);
         $text = 'this is a text';
 
         $words = $service->extract($text);
