@@ -159,22 +159,25 @@ class Rake
      */
     protected function buildStopWordsRegex(): string
     {
-        $preparedStopWords = $this->prepareStopWords(
-            $this->stoplist->getWords()
-        );
-
+        $preparedStopWords = $this->prepareStopWords($this->stoplist->getWords());
         $specialCases = $this->prepareSpecialCases($preparedStopWords);
 
-        $bounderizedStopWords = array_map(function ($word) use ($specialCases) {
+        return $this->generateStopWordsRegex($preparedStopWords, $specialCases);
+    }
+
+    protected function generateStopWordsRegex(array $stopWords, array $specialCases): string
+    {
+        $regexParts = array_map(function ($word) use ($specialCases) {
             if (array_key_exists($word, $specialCases)) {
                 return '\b(?-i)(?!' . $specialCases[$word] . ')(?i)' . $word . '\b';
             }
+
             return '\b' . $word . '\b';
-        }, $preparedStopWords);
+        }, $stopWords);
 
-        $regex = implode('|', $bounderizedStopWords);
+        $regexBody = implode('|', $regexParts);
 
-        return '/' . $regex . '/iSU';
+        return '/' . $regexBody . '/iSU';
     }
 
     /**
