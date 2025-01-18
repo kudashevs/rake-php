@@ -54,8 +54,6 @@ class Rake
      */
     public function __construct(array $options = [])
     {
-        $this->validateOptions($options);
-
         $this->initModifiers($options);
         $this->initStoplist($options);
         $this->initOptions($options);
@@ -117,13 +115,14 @@ class Rake
         }
     }
 
-
     /**
      * @throws InvalidArgumentException
      */
-    protected function validateOptions(array $options): void
+    protected function initOptions(array $options): void
     {
-        $this->validateModifiers($options);
+        $this->validateIncludeExclude($options);
+
+        $this->options = array_merge($this->options, $options);
     }
 
     protected function validateIncludeExclude(array $options): void
@@ -135,26 +134,6 @@ class Rake
         if (isset($options['include']) && !is_array($options['include'])) {
             throw new InvalidOptionType('The include option must be an array.');
         }
-    }
-
-    protected function validateStoplist(array $options): void
-    {
-        if (isset($options['stoplist']) && !$options['stoplist'] instanceof Stoplist) {
-            throw new InvalidOptionType('The stoplist option must be of type Stoplist.');
-        }
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    protected function initOptions(array $options): void
-    {
-        $this->options = array_merge($this->options, $options);
-    }
-
-    protected function initStoplist(array $options): void
-    {
-        $this->stoplist = $options['stoplist'] ?? new (self::DEFAULT_STOPLIST)();
     }
 
     protected function initStopWordsRegex(): void
