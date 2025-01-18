@@ -56,11 +56,48 @@ class Rake
     {
         $this->validateOptions($options);
 
+        $this->initModifiers($options);
         $this->initStoplist($options);
         $this->initOptions($options);
-        $this->initModifiers($options);
 
         $this->initStopWordsRegex();
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    protected function initModifiers(array $options): void
+    {
+        $this->validateModifiers($options);
+
+        $modifiers = (
+            is_string($options['modifiers'])
+            || is_object($options['modifiers'])
+        ) ? [$options['modifiers']] : $options['modifiers'];
+
+        foreach ($modifiers as $modifier) {
+            if (!is_a($modifier, Modifier::class, true)) {
+                throw new InvalidOptionType('The modifiers option must contain values of type Modifier.');
+            }
+
+            if (is_string($modifier)) {
+                $modifier = new $modifier();
+            }
+
+            $this->modifiers[] = $modifier;
+        }
+    }
+
+    protected function validateModifiers(array $options): void
+    {
+        if (
+            isset($options['modifiers'])
+            && !is_string($options['modifiers'])
+            && !is_object($options['modifiers'])
+            && !is_array($options['modifiers'])
+        ) {
+            throw new InvalidOptionType('The modifiers option must be a string, an instance, or an array.');
+        }
     }
 
     /**
@@ -91,28 +128,6 @@ class Rake
         }
     }
 
-    protected function validateModifiers(array $options): void
-    {
-        if (
-            isset($options['modifiers'])
-            && !is_string($options['modifiers'])
-            && !is_object($options['modifiers'])
-            && !is_array($options['modifiers'])
-        ) {
-            throw new InvalidOptionType('The modifiers option must be a string, an instance, or an array.');
-        }
-
-        $modifiers = (is_string($options['modifiers']) || is_object(
-                $options['modifiers']
-            )) ? [$options['modifiers']] : $options['modifiers'];
-
-        foreach ($modifiers as $modifier) {
-            if (!is_a($modifier, Modifier::class, true)) {
-                throw new InvalidOptionType('The modifiers option must contain values of type Modifier.');
-            }
-        }
-    }
-
     /**
      * @throws InvalidArgumentException
      */
@@ -124,21 +139,6 @@ class Rake
     protected function initStoplist(array $options): void
     {
         $this->stoplist = $options['stoplist'] ?? new (self::DEFAULT_STOPLIST)();
-    }
-
-    protected function initModifiers(array $options): void
-    {
-        $modifiers = (is_string($options['modifiers']) || is_object(
-                $options['modifiers']
-            )) ? [$options['modifiers']] : $options['modifiers'];
-
-        foreach ($modifiers as $modifier) {
-            if (is_string($modifier)) {
-                $modifier = new $modifier();
-            }
-
-            $this->modifiers[] = $modifier;
-        }
     }
 
     protected function initStopWordsRegex(): void
