@@ -179,9 +179,9 @@ class Rake
         $exclusions = $this->getPreparedExclusions();
         $inclusions = $this->getPreparedInclusions();
 
-        $withoutExclusions = array_diff($words, $exclusions);
+        $wordsWithoutExclusions = array_diff($words, $exclusions);
 
-        return array_merge($withoutExclusions, $inclusions);
+        return array_merge($wordsWithoutExclusions, $inclusions);
     }
 
     protected function prepareWords(array $words): array
