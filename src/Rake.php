@@ -206,7 +206,7 @@ class Rake
         });
     }
 
-    private function prepareSpecialCases(array $words): array
+    protected function prepareSpecialCases(array $words): array
     {
         $exclusions = $this->getPreparedExclusions();
 
