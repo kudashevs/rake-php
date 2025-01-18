@@ -38,16 +38,16 @@ class Rake
     ];
 
     /**
-     * 'modifiers'  array An array of Modifiers (@see Modifier::class).
+     * 'modifiers'  string|object|array A string, an instance or an array of Modifiers (@see Modifier::class).
      * 'stoplist'   Stoplist An instance of a Stoplist (@see Stoplist::class).
      * 'include'    array An array of words that should be included in the stoplist.
      * 'exclude'    array An array of words that should be excluded from the stoplist.
      *
      * @param array{
-     *     modifiers: array<array-key, Modifier>,
-     *     stoplist: Stoplist,
-     *     include: array<array-key, string>,
-     *     exclude: array<array-key, string>,
+     *     modifiers?: string|Modifier|array<array-key, Modifier>,
+     *     stoplist?: Stoplist,
+     *     include?: array<array-key, string>,
+     *     exclude?: array<array-key, string>,
      * } $options
      *
      * @throws InvalidArgumentException
