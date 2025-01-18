@@ -177,16 +177,6 @@ class Rake
         return '/' . $regex . '/iSU';
     }
 
-    private function prepareSpecialCases(array $words): array
-    {
-        $exclusions = $this->getPreparedExclusions();
-
-        return array_reduce(array_diff($exclusions, $words), function ($cases, $case) {
-            $cases[strtolower($case)] = $case;
-            return $cases;
-        }, []);
-    }
-
     /**
      * The preparation process includes the following steps:
      * - apply exclusions to the list of stop words
@@ -226,6 +216,16 @@ class Rake
         return array_filter($words, function ($word) {
             return is_string($word) && !preg_match('/^\s+$/i', $word);
         });
+    }
+
+    private function prepareSpecialCases(array $words): array
+    {
+        $exclusions = $this->getPreparedExclusions();
+
+        return array_reduce(array_diff($exclusions, $words), function ($cases, $case) {
+            $cases[strtolower($case)] = $case;
+            return $cases;
+        }, []);
     }
 
     /**
