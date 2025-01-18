@@ -353,10 +353,10 @@ class Rake
             $mutated = $modifier->modify($sequences);
         }
 
-        return $this->cleanUpAfterModification($mutated);
+        return $this->cleanUpAfterModifications($mutated);
     }
 
-    protected function cleanUpAfterModification(array $sequences): array
+    protected function cleanUpAfterModifications(array $sequences): array
     {
         return array_reduce($sequences, function ($acc, $sequence) {
             if (!preg_match('/^\s+$/i', $sequence)) {
