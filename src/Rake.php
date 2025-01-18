@@ -173,7 +173,7 @@ class Rake
      * @param array $rawWords
      * @return array
      */
-    private function prepareStopWords(array $rawWords): array
+    protected function prepareStopWords(array $rawWords): array
     {
         $words = $this->prepareWords($rawWords);
         $exclusions = $this->getPreparedExclusions();
@@ -426,7 +426,7 @@ class Rake
      * @param array $scores Array of candidates' scores
      * @return array Array of extracted keywords
      */
-    private function generateExtractedKeywords(array $candidates, array $scores): array
+    protected function generateExtractedKeywords(array $candidates, array $scores): array
     {
         $extractedKeywords = [];
         foreach ($candidates as $candidate) {
