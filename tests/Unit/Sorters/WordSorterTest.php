@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class WordSorterTest extends TestCase
 {
-
     #[Test]
     public function it_sorts_in_descending_order_by_default(): void
     {
