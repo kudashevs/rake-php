@@ -71,8 +71,9 @@ The `Rake` class accepts some configuration options:
 ```
 'modifiers' => []               # A string, an instance or an array of Modifiers
 'stoplist' => Stoplist::class   # A Stoplist instance that provides a list of stop words
-'exclude' => []                 # An array of words that will be excluded from the stoplist
-'include' => []                 # An array of words that will be included in the stoplist
+'sorter' => Sorter::class       # A Sorter instance that sorts the output of the algorithm
+'exclude' => []                 # An array of words that will be excluded from a stoplist
+'include' => []                 # An array of words that will be included in a stoplist
 ```
 
 **Note:** At the moment of instantiation, the `Rake` class may throw a few exceptions: `InvalidOptionType`. The exceptions
