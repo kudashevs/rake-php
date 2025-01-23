@@ -7,6 +7,8 @@ namespace Kudashevs\RakePhp;
 use InvalidArgumentException;
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
 use Kudashevs\RakePhp\Modifiers\Modifier;
+use Kudashevs\RakePhp\Sorters\ScoreSorter;
+use Kudashevs\RakePhp\Sorters\Sorter;
 use Kudashevs\RakePhp\Stoplists\SmartStoplist;
 use Kudashevs\RakePhp\Stoplists\Stoplist;
 
@@ -14,12 +16,16 @@ class Rake
 {
     protected const DEFAULT_STOPLIST = SmartStoplist::class;
 
+    protected const DEFAULT_SORTER = ScoreSorter::class;
+
     protected const DEFAULT_STOP_WORDS_REPLACEMENT = '|';
 
     protected readonly string $stopWordsRegex;
 
     /** @var array<array-key, Modifier> */
     protected array $modifiers = [];
+
+    protected Sorter $sorter;
 
     protected Stoplist $stoplist;
 
@@ -45,6 +51,7 @@ class Rake
      *
      * @param array{
      *     modifiers?: string|Modifier|array<array-key, Modifier>,
+     *     sorter?: Sorter,
      *     stoplist?: Stoplist,
      *     include?: array<array-key, string>,
      *     exclude?: array<array-key, string>,
@@ -55,6 +62,7 @@ class Rake
     public function __construct(array $options = [])
     {
         $this->initModifiers($options);
+        $this->initSorter($options);
         $this->initStoplist($options);
         $this->initOptions($options);
 
@@ -107,6 +115,20 @@ class Rake
         )
             ? [$options['modifiers']]
             : $options['modifiers'];
+    }
+
+    protected function initSorter(array $options): void
+    {
+        $this->validateSorterOption($options);
+
+        $this->sorter = $options['sorter'] ?? new (self::DEFAULT_SORTER)();
+    }
+
+    protected function validateSorterOption(array $options): void
+    {
+        if (isset($options['sorter']) && !$options['sorter'] instanceof Sorter) {
+            throw new InvalidOptionType('The sorter option must be of type Sorter.');
+        }
     }
 
     /**
@@ -236,7 +258,7 @@ class Rake
      * to a text and return a list of results in the keyword => score format.
      *
      * @param string $text Input text
-     * @return array An array of the RAKE algorithm result
+     * @return array<string, int|float> An array of the RAKE algorithm result
      */
     public function extract(string $text): array
     {
@@ -252,9 +274,7 @@ class Rake
 
         $extractedKeywords = $this->generateExtractedKeywords($keywordCandidates, $keywordScores);
 
-        arsort($extractedKeywords);
-
-        return $extractedKeywords;
+        return $this->sorter->sort($extractedKeywords);
     }
 
     /**

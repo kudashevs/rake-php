@@ -5,6 +5,8 @@ namespace Kudashevs\RakePhp\Tests\Unit;
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
 use Kudashevs\RakePhp\Modifiers\Modifier;
 use Kudashevs\RakePhp\Rake;
+use Kudashevs\RakePhp\Sorters\Order;
+use Kudashevs\RakePhp\Sorters\ScoreSorter;
 use Kudashevs\RakePhp\Stoplists\Stoplist;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -41,6 +43,52 @@ class RakeTest extends TestCase
 
         $this->assertCount(2, $words);
         $this->assertArrayHasKey('this', $words);
+    }
+
+    #[Test]
+    public function it_throws_an_exception_when_a_wrong_sorter(): void
+    {
+        $this->expectException(InvalidOptionType::class);
+        $this->expectExceptionMessage('of type');
+
+        new Rake(['sorter' => [new \stdClass()]]);
+    }
+
+    #[Test]
+    public function it_can_apply_a_sorter_by_default(): void
+    {
+        $sorter = new ScoreSorter(Order::ASC);
+
+        $service = new Rake();
+        $text = 'this is data of text, test, and test text';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(4, $words);
+        $this->assertSame(3.0, current($words));
+    }
+
+    #[Test]
+    public function it_can_apply_a_sorter_from_options(): void
+    {
+        $sorter = new ScoreSorter(Order::ASC);
+
+        $service = new Rake(['sorter' => $sorter]);
+        $text = 'this is data of text, test, and test text';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(4, $words);
+        $this->assertSame(1.0, current($words));
+    }
+
+    #[Test]
+    public function it_throws_an_exception_when_a_wrong_modifier(): void
+    {
+        $this->expectException(InvalidOptionType::class);
+        $this->expectExceptionMessage('of type');
+
+        new Rake(['modifiers' => [new \stdClass()]]);
     }
 
     #[Test]
