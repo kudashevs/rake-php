@@ -21,6 +21,9 @@ class NumericModifier implements Modifier
         return array_unique($withoutNumeric);
     }
 
+    /**
+     * @return array<array-key, string>
+     */
     protected function splitByNumeric(string $sequence): array
     {
         $parts = preg_split('/\b\d+\b/', $sequence);

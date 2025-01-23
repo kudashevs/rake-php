@@ -9,6 +9,9 @@ namespace Kudashevs\RakePhp\Modifiers;
  */
 class PossessionModifier implements Modifier
 {
+    /**
+     * @inheritDoc
+     */
     public function modify(array $sequences): array
     {
         return array_map(function ($sequence) {
