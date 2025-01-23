@@ -231,8 +231,9 @@ class Rake
     protected function prepareSpecialCases(array $words): array
     {
         $exclusions = $this->getPreparedExclusions();
+        $unusualCases = array_diff($exclusions, $words);
 
-        return array_reduce(array_diff($exclusions, $words), function ($cases, $case) {
+        return array_reduce($unusualCases, function ($cases, $case) {
             $cases[strtolower($case)] = $case;
             return $cases;
         }, []);
