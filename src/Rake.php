@@ -208,20 +208,20 @@ class Rake
 
     protected function prepareWords(array $words): array
     {
-        return $this->prepareWordsForStoplist($words);
+        return $this->cleanUpWords($words);
     }
 
     protected function getPreparedExclusions(): array
     {
-        return $this->prepareWordsForStoplist($this->options['exclude']);
+        return $this->cleanUpWords($this->options['exclude']);
     }
 
     protected function getPreparedInclusions(): array
     {
-        return $this->prepareWordsForStoplist($this->options['include']);
+        return $this->cleanUpWords($this->options['include']);
     }
 
-    protected function prepareWordsForStoplist(array $words): array
+    protected function cleanUpWords(array $words): array
     {
         return array_filter($words, function ($word) {
             return is_string($word) && !preg_match('/^\s+$/i', $word);
