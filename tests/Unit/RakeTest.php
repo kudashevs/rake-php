@@ -198,6 +198,19 @@ class RakeTest extends TestCase
     }
 
     #[Test]
+    public function it_can_include_regex_to_a_stoplist(): void
+    {
+        $service = new Rake(['include' => ['live(s)?']]);
+        $text = 'Peter lives in this house';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(2, $words);
+        $this->assertArrayHasKey('peter', $words);
+        $this->assertArrayHasKey('house', $words);
+    }
+
+    #[Test]
     public function it_cannot_split_when_no_stop_words_in_a_text(): void
     {
         $text = 'unsplit phrase';
