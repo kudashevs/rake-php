@@ -80,7 +80,7 @@ class Rake
 
         foreach ($modifiers as $modifier) {
             if (!is_a($modifier, Modifier::class, true)) {
-                throw new InvalidOptionType('The modifiers option must contain values of type Modifier.');
+                throw new InvalidOptionType('The modifiers option must contain values of type Modifier only.');
             }
 
             if (is_string($modifier)) {
