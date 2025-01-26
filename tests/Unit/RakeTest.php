@@ -46,7 +46,7 @@ class RakeTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_an_exception_when_a_wrong_sorter(): void
+    public function it_throws_an_exception_when_a_wrong_sorter_type(): void
     {
         $this->expectException(InvalidOptionType::class);
         $this->expectExceptionMessage('of type');
@@ -83,7 +83,7 @@ class RakeTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_an_exception_when_a_wrong_modifier(): void
+    public function it_throws_an_exception_when_a_wrong_modifier_type(): void
     {
         $this->expectException(InvalidOptionType::class);
         $this->expectExceptionMessage('of type');
