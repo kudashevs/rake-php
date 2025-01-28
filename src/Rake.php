@@ -224,7 +224,7 @@ class Rake
     protected function cleanUpWords(array $words): array
     {
         return array_filter($words, function ($word) {
-            return is_string($word) && !preg_match('/^\s+$/i', $word);
+            return is_string($word) && !empty(trim($word));
         });
     }
 
