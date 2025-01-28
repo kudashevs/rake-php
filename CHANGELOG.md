@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.1 - 2025-01-28](https://github.com/kudashevs/rake-php/compare/v2.2.0...v2.2.1) 
+
+- Fix a bug related in the option values check
+- Update README.md
+- Some improvements
+ 
 ## [2.2.0 - 2025-01-23](https://github.com/kudashevs/rake-php/compare/v2.1.0...v2.2.0) 
 
 - Add a Sorter abstraction (with `ScoreSorter`, `WordSorter`)
