@@ -198,6 +198,28 @@ class RakeTest extends TestCase
     }
 
     #[Test]
+    public function it_can_include_a_sequence_to_a_stoplist(): void
+    {
+        $service = new Rake(['include' => ['split example']]);
+        $text = 'this is a split example';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(0, $words);
+    }
+
+    #[Test]
+    public function it_can_include_a_sequence_without_affecting_a_dependant_inclusion(): void
+    {
+        $service = new Rake(['include' => ['split example']]);
+        $text = 'this split is a split example';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(1, $words);
+    }
+
+    #[Test]
     public function it_can_include_regex_to_a_stoplist(): void
     {
         $service = new Rake(['include' => ['live(s)?']]);

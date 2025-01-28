@@ -218,7 +218,12 @@ class Rake
 
     protected function getPreparedInclusions(): array
     {
-        return $this->cleanUpWords($this->options['include']);
+        $cleanedWords = $this->cleanUpWords($this->options['include']);
+        $uniqueWords = array_unique($cleanedWords);
+
+        return array_map(static function ($word) {
+            return preg_replace('/\s+/Su', '\s', $word);
+        }, $uniqueWords);
     }
 
     protected function cleanUpWords(array $words): array
