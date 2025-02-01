@@ -213,7 +213,10 @@ class Rake
 
     protected function getPreparedExclusions(): array
     {
-        return $this->cleanUpWords($this->options['exclude']);
+        $cleanedWords = $this->cleanUpWords($this->options['exclude']);
+        $uniqueWords = array_unique($cleanedWords);
+
+        return $uniqueWords;
     }
 
     protected function getPreparedInclusions(): array
