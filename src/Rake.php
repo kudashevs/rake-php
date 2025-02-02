@@ -7,6 +7,7 @@ namespace Kudashevs\RakePhp;
 use InvalidArgumentException;
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
 use Kudashevs\RakePhp\Modifiers\Modifier;
+use Kudashevs\RakePhp\Preparers\PreparerFactory;
 use Kudashevs\RakePhp\Sorters\ScoreSorter;
 use Kudashevs\RakePhp\Sorters\Sorter;
 use Kudashevs\RakePhp\Stoplists\SmartStoplist;
@@ -19,6 +20,8 @@ class Rake
     protected const DEFAULT_SORTER = ScoreSorter::class;
 
     protected const DEFAULT_STOP_WORDS_REPLACEMENT = '|';
+
+    protected PreparerFactory $factory;
 
     protected readonly string $stopWordsRegex;
 
@@ -61,12 +64,19 @@ class Rake
      */
     public function __construct(array $options = [])
     {
+        $this->initPreparerFactory();
+
         $this->initModifiers($options);
         $this->initSorter($options);
         $this->initStoplist($options);
         $this->initOptions($options);
 
         $this->initStopWordsRegex();
+    }
+
+    protected function initPreparerFactory(): void
+    {
+        $this->factory = new PreparerFactory();
     }
 
     /**
@@ -214,7 +224,8 @@ class Rake
 
     protected function prepareWords(array $words): array
     {
-        return $this->cleanUpWords($words);
+        return $this->factory->for('words')
+            ->prepare($words);
     }
 
     protected function getPreparedExclusions(): array
