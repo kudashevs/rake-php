@@ -189,6 +189,9 @@ class Rake
 
     /**
      * The preparation process includes the following steps:
+     * - prepare provided exclusions
+     * - prepare provided inclusions
+     * - prioritize exclusions over inclusions
      * - apply exclusions to the list of stop words
      * - apply inclusions to the list of stop words
      *
@@ -200,6 +203,9 @@ class Rake
         $words = $this->prepareWords($rawWords);
         $exclusions = $this->getPreparedExclusions();
         $inclusions = $this->getPreparedInclusions();
+
+        // prioritize exclusions over inclusions
+        $inclusions = array_diff($inclusions, $exclusions);
 
         $wordsWithoutExclusions = array_diff($words, $exclusions);
 

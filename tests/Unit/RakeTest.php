@@ -233,6 +233,21 @@ class RakeTest extends TestCase
     }
 
     #[Test]
+    public function it_can_prioritize_exclusions_over_inclusions(): void
+    {
+        $service = new Rake([
+            'exclude' => ['about'],
+            'include' => ['about'],
+        ]);
+        $text = 'the fun is about to start';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(3, $words);
+        $this->assertArrayHasKey('about', $words);
+    }
+
+    #[Test]
     public function it_cannot_split_when_no_stop_words_in_a_text(): void
     {
         $text = 'unsplit phrase';
