@@ -230,9 +230,7 @@ class Rake
         $cleanedWords = $this->cleanUpWords($this->options['include']);
         $uniqueWords = array_unique($cleanedWords);
 
-        return array_map(static function ($word) {
-            return preg_replace('/\s+/Su', '\s', $word);
-        }, $uniqueWords);
+        return $uniqueWords;
     }
 
     protected function cleanUpWords(array $words): array
