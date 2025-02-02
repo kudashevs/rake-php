@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0 - 2025-02-02](https://github.com/kudashevs/rake-php/compare/v2.2.1...v2.3.0) 
+
+- Add the priority to exclusions over inclusions
+- Update README.md
+- Some improvements
+
 ## [2.2.1 - 2025-01-28](https://github.com/kudashevs/rake-php/compare/v2.2.0...v2.2.1) 
 
 - Fix a bug related to the option values check
