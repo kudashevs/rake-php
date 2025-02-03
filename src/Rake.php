@@ -199,6 +199,7 @@ class Rake
 
     /**
      * The preparation process includes the following steps:
+     * - prepare provided words
      * - prepare provided exclusions
      * - prepare provided inclusions
      * - prioritize exclusions over inclusions
@@ -240,6 +241,11 @@ class Rake
             ->prepare($this->options['include']);
     }
 
+    /**
+     * Prepare special cases in the lowercase(case) => case format.
+     *
+     * @return array<string, string>
+     */
     protected function prepareSpecialCases(array $words): array
     {
         $exclusions = $this->getPreparedExclusions();
