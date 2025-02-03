@@ -10,20 +10,14 @@ class NormalizerFactory
 {
     public function for(string $case): Normalizer
     {
-        switch ($case) {
-            case 'words':
-                return new WordsNormalizer();
+        return match ($case) {
+            'words' => new WordsNormalizer(),
+            'exclusions' => new ExclusionsNormalizer(),
+            'inclusions' => new InclusionsNormalizer(),
 
-            case 'exclusions':
-                return new ExclusionsNormalizer();
-
-            case 'inclusions':
-                return new InclusionsNormalizer();
-
-            default:
-                throw new InvalidNormalizerCase(
-                    sprintf('An unknown preparer case %s provided.', $case)
-                );
-        }
+            default => throw new InvalidNormalizerCase(
+                sprintf('An unknown preparer case %s provided.', $case)
+            ),
+        };
     }
 }
