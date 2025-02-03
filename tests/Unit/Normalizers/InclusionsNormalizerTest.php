@@ -46,7 +46,7 @@ class InclusionsNormalizerTest extends TestCase
     }
 
     #[Test]
-    public function it_can_noramlize_and_unfold_an_alternation_rege(): void
+    public function it_can_noramlize_and_unfold_an_alternation_regex(): void
     {
         $words = ['(change|changes)'];
 
