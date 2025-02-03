@@ -13,7 +13,8 @@ class InclusionsNormalizer extends Normalizer
     {
         $validWords = $this->extractValid($words);
         $unfoldWords = $this->unfoldWords($validWords);
+        $cleanWords = $this->removeEmpty($unfoldWords);
 
-        return $this->removeEmpty($unfoldWords);
+        return array_unique($cleanWords);
     }
 }

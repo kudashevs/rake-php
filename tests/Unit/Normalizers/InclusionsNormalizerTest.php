@@ -26,6 +26,16 @@ class InclusionsNormalizerTest extends TestCase
     }
 
     #[Test]
+    public function it_can_remove_duplicates(): void
+    {
+        $words = ['test', 'test'];
+
+        $prepared = $this->normalizer->prepare($words);
+
+        $this->assertCount(1, $prepared);
+    }
+
+    #[Test]
     public function it_can_normalize_and_unfold_a_word_alternation_regex(): void
     {
         $words = ['change(s|d)'];
