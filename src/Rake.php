@@ -7,7 +7,7 @@ namespace Kudashevs\RakePhp;
 use InvalidArgumentException;
 use Kudashevs\RakePhp\Exceptions\InvalidOptionType;
 use Kudashevs\RakePhp\Modifiers\Modifier;
-use Kudashevs\RakePhp\Preparers\PreparerFactory;
+use Kudashevs\RakePhp\Normalizers\NormalizerFactory;
 use Kudashevs\RakePhp\Sorters\ScoreSorter;
 use Kudashevs\RakePhp\Sorters\Sorter;
 use Kudashevs\RakePhp\Stoplists\SmartStoplist;
@@ -21,7 +21,7 @@ class Rake
 
     protected const DEFAULT_STOP_WORDS_REPLACEMENT = '|';
 
-    protected PreparerFactory $factory;
+    protected NormalizerFactory $factory;
 
     protected readonly string $stopWordsRegex;
 
@@ -64,7 +64,7 @@ class Rake
      */
     public function __construct(array $options = [])
     {
-        $this->initPreparerFactory();
+        $this->initNormalizerFactory();
 
         $this->initModifiers($options);
         $this->initSorter($options);
@@ -74,9 +74,9 @@ class Rake
         $this->initStopWordsRegex();
     }
 
-    protected function initPreparerFactory(): void
+    protected function initNormalizerFactory(): void
     {
-        $this->factory = new PreparerFactory();
+        $this->factory = new NormalizerFactory();
     }
 
     /**

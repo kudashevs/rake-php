@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kudashevs\RakePhp\Preparers;
+namespace Kudashevs\RakePhp\Normalizers;
 
-class ExclusionsPreparer extends Preparer
+class InclusionsNormalizer extends Normalizer
 {
     /**
      * @inheritDoc

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Kudashevs\RakePhp\Preparers;
+namespace Kudashevs\RakePhp\Normalizers;
 
 /**
  * Preparer represents an abstraction that prepare lists of words for usage.
  */
-abstract class Preparer
+abstract class Normalizer
 {
     /**
      * Prepare a list of words.

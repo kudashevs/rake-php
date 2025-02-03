@@ -1,22 +1,22 @@
 <?php
 
-namespace Kudashevs\RakePhp\Tests\Unit\Preparators;
+namespace Kudashevs\RakePhp\Tests\Unit\Normalizers;
 
-use Kudashevs\RakePhp\Preparers\WordsPreparer;
+use Kudashevs\RakePhp\Normalizers\WordsNormalizer;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class WordsPreparerTest extends TestCase
+class WordsNormalizerTest extends TestCase
 {
-    private WordsPreparer $preparator;
+    private WordsNormalizer $preparator;
 
     protected function setUp(): void
     {
-        $this->preparator = new WordsPreparer();
+        $this->preparator = new WordsNormalizer();
     }
 
     #[Test]
-    public function it_can_prepare_provided_words(): void
+    public function it_can_clean_provided_words(): void
     {
         $words = ['test', ' ', 42];
 

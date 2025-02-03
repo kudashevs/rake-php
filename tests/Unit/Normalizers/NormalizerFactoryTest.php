@@ -1,30 +1,30 @@
 <?php
 
-namespace Kudashevs\RakePhp\Tests\Unit\Preparators;
+namespace Kudashevs\RakePhp\Tests\Unit\Normalizers;
 
-use Kudashevs\RakePhp\Exceptions\InvalidPreparerCase;
-use Kudashevs\RakePhp\Preparers\Preparer;
-use Kudashevs\RakePhp\Preparers\PreparerFactory;
+use Kudashevs\RakePhp\Exceptions\InvalidNormalizerCase;
+use Kudashevs\RakePhp\Normalizers\Normalizer;
+use Kudashevs\RakePhp\Normalizers\NormalizerFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class PreparerFactoryTest extends TestCase
+class NormalizerFactoryTest extends TestCase
 {
-    private PreparerFactory $factory;
+    private NormalizerFactory $factory;
 
     protected function setUp(): void
     {
-        $this->factory = new PreparerFactory();
+        $this->factory = new NormalizerFactory();
     }
 
     #[Test]
     public function it_throws_an_exception_when_a_unknown_case(): void
     {
-        $this->expectException(InvalidPreparerCase::class);
+        $this->expectException(InvalidNormalizerCase::class);
         $this->expectExceptionMessage('unknown');
 
-        (new PreparerFactory())->for('wrong');
+        (new NormalizerFactory())->for('wrong');
     }
 
     #[Test]
@@ -33,7 +33,7 @@ class PreparerFactoryTest extends TestCase
     {
         $preparator = $this->factory->for($case);
 
-        $this->assertInstanceOf(Preparer::class, $preparator);
+        $this->assertInstanceOf(Normalizer::class, $preparator);
     }
 
     public static function provideDifferentCases(): array
