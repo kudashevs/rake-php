@@ -8,11 +8,11 @@ use PHPUnit\Framework\TestCase;
 
 class InclusionsNormalizerTest extends TestCase
 {
-    private InclusionsNormalizer $preparator;
+    private InclusionsNormalizer $normalizer;
 
     protected function setUp(): void
     {
-        $this->preparator = new InclusionsNormalizer();
+        $this->normalizer = new InclusionsNormalizer();
     }
 
     #[Test]
@@ -20,7 +20,7 @@ class InclusionsNormalizerTest extends TestCase
     {
         $words = ['test', ' ', 42];
 
-        $prepared = $this->preparator->prepare($words);
+        $prepared = $this->normalizer->prepare($words);
 
         $this->assertCount(1, $prepared);
     }
@@ -30,7 +30,7 @@ class InclusionsNormalizerTest extends TestCase
     {
         $words = ['change(s|d)'];
 
-        $prepared = $this->preparator->prepare($words);
+        $prepared = $this->normalizer->prepare($words);
 
         $this->assertCount(3, $prepared);
     }
@@ -40,7 +40,7 @@ class InclusionsNormalizerTest extends TestCase
     {
         $words = ['(change|changes)'];
 
-        $prepared = $this->preparator->prepare($words);
+        $prepared = $this->normalizer->prepare($words);
 
         $this->assertCount(2, $prepared);
     }
@@ -50,7 +50,7 @@ class InclusionsNormalizerTest extends TestCase
     {
         $words = ['.+(ly)'];
 
-        $prepared = $this->preparator->prepare($words);
+        $prepared = $this->normalizer->prepare($words);
 
         $this->assertSame('.+(ly)', current($prepared));
     }
@@ -60,7 +60,7 @@ class InclusionsNormalizerTest extends TestCase
     {
         $words = ['cause(\w+){1,2}'];
 
-        $prepared = $this->preparator->prepare($words);
+        $prepared = $this->normalizer->prepare($words);
 
         $this->assertMatchesRegularExpression('/^.+\(.+\)\\\{.*\\\}$/', current($prepared));
     }

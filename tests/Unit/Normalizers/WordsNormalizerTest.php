@@ -8,11 +8,11 @@ use PHPUnit\Framework\TestCase;
 
 class WordsNormalizerTest extends TestCase
 {
-    private WordsNormalizer $preparator;
+    private WordsNormalizer $normalizer;
 
     protected function setUp(): void
     {
-        $this->preparator = new WordsNormalizer();
+        $this->normalizer = new WordsNormalizer();
     }
 
     #[Test]
@@ -20,7 +20,7 @@ class WordsNormalizerTest extends TestCase
     {
         $words = ['test', ' ', 42];
 
-        $prepared = $this->preparator->prepare($words);
+        $prepared = $this->normalizer->prepare($words);
 
         $this->assertCount(1, $prepared);
     }
