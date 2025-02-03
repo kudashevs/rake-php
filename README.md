@@ -72,9 +72,11 @@ The `Rake` class accepts some configuration options:
 'modifiers' => []               # A string, an instance or an array of Modifiers
 'stoplist' => Stoplist::class   # A Stoplist instance that provides a list of stop words
 'sorter' => Sorter::class       # A Sorter instance that sorts the output of the algorithm
-'exclude' => []                 # An array of words that will be excluded from a stoplist (accept [simple regexes](#simple-regular-expressons))
-'include' => []                 # An array of words that will be included in a stoplist (accept [simple regexes](#simple-regular-expressons))
+'exclude' => []                 # An array of words or regex that will be excluded from a stoplist
+'include' => []                 # An array of words or regexes that will be included in a stoplist
 ```
+
+**Note:** the configuration options `exclude` and `include` accept [simple regexes](#simple-regular-expressions).
 
 **Note:** the configuration option `exclude` has a higher priority than the `include` option.
 
@@ -84,9 +86,9 @@ extends a built-in `InvalidArgumentException` class, so it is easy to deal with.
 ### Simple regular expressions
 
 The configuration options `exclude` and `include` accept regular expressions. The current expressions are currently supported:
-- `.+(ly)` - a simple match with grouping
+- `.+(ly)` - a one or more match with grouping
 - `word(s)` - a match with alternation at the end of a word
-- `(word|letter)` - an alternation
+- `(word|letter)` - an alternation of words
 
 
 ## Testing
