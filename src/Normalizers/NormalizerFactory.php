@@ -16,7 +16,7 @@ class NormalizerFactory
             'inclusions' => new InclusionsNormalizer(),
 
             default => throw new InvalidNormalizerCase(
-                sprintf('An unknown preparer case %s provided.', $case)
+                sprintf('An unknown normalization case %s provided.', $case)
             ),
         };
     }
