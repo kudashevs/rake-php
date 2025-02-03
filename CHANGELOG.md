@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.0 - 2025-02-03](https://github.com/kudashevs/rake-php/compare/v2.3.0...v2.4.0)
+
+- Add a Normalizer abstraction (with `WordsNormalizer`, `ExclusionsNormalizer`, `InclusionsNormalizer`)
+- Add a possibility to use simple regexes with exclude/include options (closes #8)
+- Update README.md
+- Some improvements
+
 ## [2.3.0 - 2025-02-02](https://github.com/kudashevs/rake-php/compare/v2.2.1...v2.3.0) 
 
 - Add the priority to exclusions over inclusions
