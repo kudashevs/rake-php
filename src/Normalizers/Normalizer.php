@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kudashevs\RakePhp\Normalizers;
 
 /**
- * Preparer represents an abstraction that prepare lists of words for usage.
+ * Normalizer represents an abstraction that prepare lists of words for usage.
  */
 abstract class Normalizer
 {
@@ -56,6 +56,10 @@ abstract class Normalizer
         });
     }
 
+    /**
+     * @param array<array-key, string> $words
+     * @return array<array-key, string>
+     */
     protected function unfoldWords(array $words): array
     {
         return array_reduce($words, function ($words, $word) {
