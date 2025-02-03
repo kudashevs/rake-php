@@ -72,7 +72,7 @@ The `Rake` class accepts some configuration options:
 'modifiers' => []               # A string, an instance or an array of Modifiers
 'stoplist' => Stoplist::class   # A Stoplist instance that provides a list of stop words
 'sorter' => Sorter::class       # A Sorter instance that sorts the output of the algorithm
-'exclude' => []                 # An array of words or regex that will be excluded from a stoplist
+'exclude' => []                 # An array of words or regexes that will be excluded from a stoplist
 'include' => []                 # An array of words or regexes that will be included in a stoplist
 ```
 
