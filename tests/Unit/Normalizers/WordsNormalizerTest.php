@@ -24,4 +24,14 @@ class WordsNormalizerTest extends TestCase
 
         $this->assertCount(1, $prepared);
     }
+
+    #[Test]
+    public function it_can_remove_duplicates(): void
+    {
+        $words = ['test', 'test'];
+
+        $prepared = $this->normalizer->prepare($words);
+
+        $this->assertCount(1, $prepared);
+    }
 }

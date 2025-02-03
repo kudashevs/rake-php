@@ -11,6 +11,8 @@ class WordsNormalizer extends Normalizer
      */
     public function prepare(array $words): array
     {
-        return $this->cleanUp($words);
+        $cleanWords = $this->cleanUp($words);
+
+        return array_unique($cleanWords);
     }
 }
