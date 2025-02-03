@@ -230,25 +230,14 @@ class Rake
 
     protected function getPreparedExclusions(): array
     {
-        $cleanedWords = $this->cleanUpWords($this->options['exclude']);
-        $uniqueWords = array_unique($cleanedWords);
-
-        return $uniqueWords;
+        return $this->factory->for('exclusions')
+            ->prepare($this->options['exclude']);
     }
 
     protected function getPreparedInclusions(): array
     {
-        $cleanedWords = $this->cleanUpWords($this->options['include']);
-        $uniqueWords = array_unique($cleanedWords);
-
-        return $uniqueWords;
-    }
-
-    protected function cleanUpWords(array $words): array
-    {
-        return array_filter($words, function ($word) {
-            return is_string($word) && !empty(trim($word));
-        });
+        return $this->factory->for('inclusions')
+            ->prepare($this->options['include']);
     }
 
     protected function prepareSpecialCases(array $words): array

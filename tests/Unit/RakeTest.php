@@ -178,6 +178,29 @@ class RakeTest extends TestCase
     }
 
     #[Test]
+    public function it_can_exclude_simple_regex_from_a_stoplist(): void
+    {
+        $service = new Rake(['exclude' => ['cause(s)']]);
+        $text = 'the cause causes this cause';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(2, $words);
+        $this->assertArrayHasKey('cause causes', $words);
+    }
+
+    #[Test]
+    public function it_cannot_exclude_complex_regex_from_a_stoplist(): void
+    {
+        $service = new Rake(['exclude' => ['cause(\w+){1,2}']]);
+        $text = 'the cause causes this cause';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(0, $words);
+    }
+
+    #[Test]
     public function it_throws_an_exception_when_an_invalid_include_type(): void
     {
         $this->expectException(InvalidOptionType::class);
@@ -220,15 +243,28 @@ class RakeTest extends TestCase
     }
 
     #[Test]
-    public function it_can_include_regex_to_a_stoplist(): void
+    public function it_can_include_simple_regex_to_a_stoplist(): void
     {
-        $service = new Rake(['include' => ['live(s)?']]);
+        $service = new Rake(['include' => ['live(s)']]);
         $text = 'Peter lives in this house';
 
         $words = $service->extract($text);
 
         $this->assertCount(2, $words);
         $this->assertArrayHasKey('peter', $words);
+        $this->assertArrayHasKey('house', $words);
+    }
+
+    #[Test]
+    public function it_cannot_include_complex_regex_to_a_stoplist(): void
+    {
+        $service = new Rake(['include' => ['live(\w+){1,3}']]);
+        $text = 'Peter lives in this house';
+
+        $words = $service->extract($text);
+
+        $this->assertCount(2, $words);
+        $this->assertArrayHasKey('peter lives', $words);
         $this->assertArrayHasKey('house', $words);
     }
 
