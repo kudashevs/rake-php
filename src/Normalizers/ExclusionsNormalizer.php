@@ -11,6 +11,9 @@ class ExclusionsNormalizer extends Normalizer
      */
     public function prepare(array $words): array
     {
-        return $this->cleanUp($words);
+        $validWords = $this->extractValid($words);
+        $unfoldWords = $this->unfoldWords($validWords);
+
+        return $this->removeEmpty($unfoldWords);
     }
 }
