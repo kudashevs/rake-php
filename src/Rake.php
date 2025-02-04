@@ -15,8 +15,10 @@ use Kudashevs\RakePhp\Stoplists\Stoplist;
 
 class Rake
 {
+    /** @var class-string<SmartStoplist> */
     protected const DEFAULT_STOPLIST = SmartStoplist::class;
 
+    /** @var class-string<ScoreSorter> */
     protected const DEFAULT_SORTER = ScoreSorter::class;
 
     protected const DEFAULT_STOP_WORDS_REPLACEMENT = '|';
@@ -80,7 +82,9 @@ class Rake
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @param array{modifiers?: string|Modifier|array<array-key, Modifier>} $options
+     *
+     * @throws InvalidOptionType
      */
     protected function initModifiers(array $options): void
     {
@@ -127,6 +131,11 @@ class Rake
             : $options['modifiers'];
     }
 
+    /**
+     * @param array{sorter?: Sorter} $options
+     *
+     * @throws InvalidOptionType
+     */
     protected function initSorter(array $options): void
     {
         $this->validateSorterOption($options);
@@ -142,7 +151,9 @@ class Rake
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @param array{stoplist?: Stoplist} $options
+     *
+     * @throws InvalidOptionType
      */
     protected function initStoplist(array $options): void
     {
@@ -159,7 +170,9 @@ class Rake
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @param array{include?: array<array-key, string>, exclude?: array<array-key, string>} $options
+     *
+     * @throws InvalidOptionType
      */
     protected function initOptions(array $options): void
     {
