@@ -352,10 +352,10 @@ class Rake
 
         $candidates = [];
         foreach ($sequences as $sequence) {
-            $sequence = strtolower(trim($sequence));
+            $candidate = strtolower(trim($sequence));
 
-            if ($sequence !== '') {
-                $candidates[] = $sequence;
+            if ($candidate !== '') {
+                $candidates[] = $candidate;
             }
         }
 
