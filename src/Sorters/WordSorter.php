@@ -8,7 +8,7 @@ class WordSorter implements Sorter
 {
     private Order $order;
 
-    public function __construct($order = Order::DESC)
+    public function __construct(Order $order = Order::DESC)
     {
         $this->order = $order;
     }
