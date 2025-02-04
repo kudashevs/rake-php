@@ -117,6 +117,10 @@ class Rake
         }
     }
 
+    /**
+     * @param array{modifiers?: string|Modifier|array<array-key, Modifier>} $options
+     * @return array<array-key, string|Modifier>
+     */
     protected function normalizeModifiers(array $options): array
     {
         if (!isset($options['modifiers'])) {
@@ -219,8 +223,8 @@ class Rake
      * - apply exclusions to the list of stop words
      * - apply inclusions to the list of stop words
      *
-     * @param array $rawWords
-     * @return array
+     * @param array<array-key, string> $rawWords
+     * @return array<array-key, string>
      */
     protected function prepareStopWords(array $rawWords): array
     {
@@ -236,18 +240,28 @@ class Rake
         return array_merge($wordsWithoutExclusions, $inclusions);
     }
 
+    /**
+     * @param array<array-key, string> $words
+     * @return array<array-key, string>
+     */
     protected function prepareWords(array $words): array
     {
         return $this->factory->for('words')
             ->prepare($words);
     }
 
+    /**
+     * @return array<array-key, string>
+     */
     protected function getPreparedExclusions(): array
     {
         return $this->factory->for('exclusions')
             ->prepare($this->options['exclude']);
     }
 
+    /**
+     * @return array<array-key, string>
+     */
     protected function getPreparedInclusions(): array
     {
         return $this->factory->for('inclusions')
@@ -314,7 +328,7 @@ class Rake
      * to a provided text and return a list of found keywords only.
      *
      * @param string $text
-     * @return array
+     * @return array<array-key, string>
      */
     public function extractWords(string $text): array
     {
@@ -328,7 +342,7 @@ class Rake
      * to a provided text and return a list of calculated scores only.
      *
      * @param string $text
-     * @return array
+     * @return array<array-key, int|float>
      */
     public function extractScores(string $text): array
     {
@@ -339,11 +353,11 @@ class Rake
 
     /**
      * Split phrases into of contiguous words. Words within a sequence are assigned
-     * the same position in the text and together are considered a candidate keyword)
+     * the same position in the text and together are considered a candidate keyword
      * For more information @see 1.2.1 Candidate keywords.
      *
      * @param string $text Input text
-     * @return array Array of candidates
+     * @return array<array-key, string> Array of candidates
      */
     protected function extractCandidateKeywords(string $text): array
     {
@@ -390,7 +404,7 @@ class Rake
 
     /**
      * @param string $text Text to be split into phrases
-     * @return array Array of phrases
+     * @return array<array-key, string> Array of phrases
      */
     protected function splitIntoSequences(string $text): array
     {
@@ -402,6 +416,10 @@ class Rake
         );
     }
 
+    /**
+     * @param array<array-key, string> $sequences
+     * @return array<array-key, string>
+     */
     protected function applyModifiers(array $sequences): array
     {
         $mutated = $sequences;
@@ -413,6 +431,10 @@ class Rake
         return $this->cleanUpAfterModifications($mutated);
     }
 
+    /**
+     * @param array<array-key, string> $sequences
+     * @return array<array-key, string>
+     */
     protected function cleanUpAfterModifications(array $sequences): array
     {
         return array_reduce($sequences, function ($acc, $sequence) {
@@ -430,8 +452,8 @@ class Rake
      * candidate keyword and defined as the sum of its member word scores.
      * For more information @see 1.2.2 Keyword scores
      *
-     * @param array $candidates Array of candidates
-     * @return array Array of scores
+     * @param array<array-key, string> $candidates Array of candidates
+     * @return array<string, int|float> Array of scores
      */
     protected function calculateWordScores(array $candidates): array
     {
@@ -465,7 +487,7 @@ class Rake
 
     /**
      * @param string $text Text to be split into words
-     * @return array Array of words
+     * @return array<array-key, string> Array of words
      */
     protected function splitIntoWords(string $text): array
     {
@@ -479,9 +501,9 @@ class Rake
     /**
      * Generate extracted keywords by combining each candidate with its score.
      *
-     * @param array $candidates Array of keyword candidates
-     * @param array $scores Array of candidates' scores
-     * @return array Array of extracted keywords
+     * @param array<array-key, string> $candidates Array of keyword candidates
+     * @param array<string, int|float> $scores Array of candidates' scores
+     * @return array<string, int|float> Array of extracted keywords
      */
     protected function generateExtractedKeywords(array $candidates, array $scores): array
     {
