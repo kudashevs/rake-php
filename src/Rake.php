@@ -354,12 +354,17 @@ class Rake
         foreach ($sequences as $sequence) {
             $candidate = strtolower(trim($sequence));
 
-            if ($candidate !== '') {
+            if ($this->isAppropriateCandidate($candidate)) {
                 $candidates[] = $candidate;
             }
         }
 
         return $candidates;
+    }
+
+    protected function isAppropriateCandidate(string $candidate): bool
+    {
+        return $candidate !== '';
     }
 
     /**
