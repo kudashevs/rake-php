@@ -105,6 +105,9 @@ class Rake
         }
     }
 
+    /**
+     * @param array{modifiers?: string|Modifier|array<array-key, Modifier>} $options
+     */
     protected function validateModifiersOption(array $options): void
     {
         if (
@@ -147,6 +150,9 @@ class Rake
         $this->sorter = $options['sorter'] ?? new (self::DEFAULT_SORTER)();
     }
 
+    /**
+     * @param array{sorter?: Sorter} $options
+     */
     protected function validateSorterOption(array $options): void
     {
         if (isset($options['sorter']) && !$options['sorter'] instanceof Sorter) {
@@ -166,6 +172,9 @@ class Rake
         $this->stoplist = $options['stoplist'] ?? new (self::DEFAULT_STOPLIST)();
     }
 
+    /**
+     * @param array{stoplist?: Stoplist} $options
+     */
     protected function validateStoplistOption(array $options): void
     {
         if (isset($options['stoplist']) && !$options['stoplist'] instanceof Stoplist) {
@@ -185,6 +194,9 @@ class Rake
         $this->options = array_merge($this->options, $options);
     }
 
+    /**
+     * @param array{include?: array<array-key, string>, exclude?: array<array-key, string>} $options
+     */
     protected function validateIncludeExcludeOption(array $options): void
     {
         if (isset($options['exclude']) && !is_array($options['exclude'])) {
@@ -271,6 +283,7 @@ class Rake
     /**
      * Prepare special cases in the lowercase(case) => case format.
      *
+     * @param array<array-key, string> $words
      * @return array<string, string>
      */
     protected function prepareSpecialCases(array $words): array
@@ -284,6 +297,11 @@ class Rake
         }, []);
     }
 
+    /**
+     * @param array<array-key, string> $stopWords
+     * @param array<string, string> $specialCases
+     * @return string
+     */
     protected function generateStopWordsRegex(array $stopWords, array $specialCases): string
     {
         $regexParts = array_map(function ($word) use ($specialCases) {
