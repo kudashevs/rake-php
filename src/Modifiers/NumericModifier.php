@@ -26,9 +26,9 @@ class NumericModifier implements Modifier
      */
     protected function splitByNumeric(string $sequence): array
     {
-        $parts = preg_split('/\b\d+\b/', $sequence);
+        $parts = preg_split('/\b\d+\b/', $sequence) ?: [];
 
-        return array_map(function ($part) {
+        return array_map(static function ($part) {
             return trim($part);
         }, $parts);
     }
