@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0 - 2026-04-30](https://github.com/kudashevs/rake-php/compare/v2.4.0...v3.0.0)
+
+- Add support for PHP 8.5
+- Increase the minimum PHP version to 8.2
+- Increase the minimum PHPUnit version to 11.0
+- Add PHPStan static analysis
+- Update README.md
+- Some improvements
+
 ## [2.4.0 - 2025-02-03](https://github.com/kudashevs/rake-php/compare/v2.3.0...v2.4.0)
 
 - Add a Normalizer abstraction (with `WordsNormalizer`, `ExclusionsNormalizer`, `InclusionsNormalizer`)
