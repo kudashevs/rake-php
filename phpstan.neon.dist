@@ -1,0 +1,14 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+    tmpDir: build/phpstan
+    checkMissingIterableValueType: true
+    ignoreErrors:
+        -
+            message: "#^Readonly property [a-zA-Z\\\\]+::\\$stopWordsRegex is#"
+            count: 2
+            path: src/Rake.php
