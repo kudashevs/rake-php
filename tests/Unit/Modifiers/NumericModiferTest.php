@@ -18,6 +18,7 @@ class NumericModiferTest extends TestCase
         $words = $service->extract($text);
 
         $this->assertCount(1, $words);
+        $this->assertArrayHasKey('split 42 words', $words);
     }
 
     #[Test]
