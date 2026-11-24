@@ -107,4 +107,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 
-The MIT License (MIT). Please see the [License file](LICENSE.md) for more information.
+The MIT License (MIT). Please see the [License file](LICENSE) for more information.
